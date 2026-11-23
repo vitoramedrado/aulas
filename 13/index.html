@@ -7,27 +7,12 @@
 <title>Argumentação Jurídica (Aula 13)</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <style>
-/* Layout: palco de slides em tela cheia, um por vez, texto alinhado à esquerda, controles discretos no rodapé */
+/* Layout: um slide por vez, pouco texto e letra grande para projeção; fotos à direita; visual único e claro */
 :root{
-  --bg:#f4f6fa; --surface:#ffffff; --ink:#16213a; --muted:#56617a; --line:#d5dbe8;
-  --accent:#2a48c8; --accent-soft:#e3e9fb;
-  --ok:#1c7a50; --ok-soft:#dff3e8; --bad:#b8342c; --bad-soft:#fae3e0; --warm:#8f5400; --warm-soft:#fbefd9;
+  --bg:#f5f7fb; --surface:#ffffff; --ink:#131c33; --muted:#5a6580; --line:#d8deea; --accent:#1f3fbf;
   --display:"Palatino Linotype",Palatino,"Book Antiqua","Iowan Old Style",Georgia,serif;
   --body:"Avenir Next","Segoe UI",Calibri,system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
-}
-@media (prefers-color-scheme:dark){
-  :root:not([data-theme="light"]){
-    --bg:#0e1524; --surface:#172036; --ink:#e9edf6; --muted:#a3adc4; --line:#2b3754;
-    --accent:#93a9ff; --accent-soft:#1f2c55;
-    --ok:#62d19b; --ok-soft:#12372a; --bad:#ff8f86; --bad-soft:#44201d; --warm:#f0b95a; --warm-soft:#3d2f12;
-    color-scheme:dark;
-  }
-}
-:root[data-theme="dark"]{
-  --bg:#0e1524; --surface:#172036; --ink:#e9edf6; --muted:#a3adc4; --line:#2b3754;
-  --accent:#93a9ff; --accent-soft:#1f2c55;
-  --ok:#62d19b; --ok-soft:#12372a; --bad:#ff8f86; --bad-soft:#44201d; --warm:#f0b95a; --warm-soft:#3d2f12;
-  color-scheme:dark;
+  color-scheme:light;
 }
 html,body{height:100%}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body)}
@@ -36,453 +21,386 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body)}
 button{font:inherit;color:inherit;cursor:pointer}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 
-.deck{height:100%;display:grid;grid-template-rows:auto minmax(0,1fr) auto;
+.deck{height:100%;display:grid;grid-template-rows:minmax(0,1fr) auto;
   padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
-.topo{display:flex;justify-content:space-between;gap:1em;padding-block:.6rem;font-size:.78rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
-.palco{overflow:auto;display:flex;font-size:clamp(17px,1.5vw + .9vh,34px)}
-.slide{display:none;flex-direction:column;gap:.7em;margin:auto;width:100%;max-width:36em;padding-block:.6em}
+.palco{overflow:auto;display:flex;font-size:clamp(20px,2.3vw + 1.5vh,58px)}
+.slide{display:none;flex-direction:column;gap:.55em;margin:auto;width:100%;max-width:27em;padding-block:.4em}
 .slide.on{display:flex}
+.slide.foto.on{display:grid}
+.foto{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:1.2em;align-items:center}
+.txt{display:flex;flex-direction:column;gap:.55em;min-width:0}
 
-h1,h2{font-family:var(--display);margin:0;text-wrap:balance;font-weight:700}
-h1{font-size:2.6em;line-height:1.05}
-h2{font-size:1.7em;line-height:1.12}
-p,li{margin:0;line-height:1.4}
-ul{margin:0;padding-left:1.1em;display:flex;flex-direction:column;gap:.35em}
-.olho{font-size:.6em;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);font-weight:700}
-.grande{font-family:var(--display);font-size:1.35em;line-height:1.25}
-.menor{font-size:.78em;color:var(--muted)}
-blockquote{margin:0;padding:.6em .9em;background:var(--surface);border:1px solid var(--line);border-radius:.4em;font-family:var(--display);font-size:1.05em;line-height:1.35}
-blockquote cite{display:block;font-family:var(--body);font-style:normal;font-size:.62em;color:var(--muted);margin-top:.5em}
-.tarefa{background:var(--accent-soft);border-radius:.4em;padding:.55em .8em;font-weight:600}
-.tarefa b{color:var(--accent)}
-.cena{background:var(--surface);border:1px solid var(--line);border-radius:.4em;padding:.6em .85em;font-family:var(--display);font-size:1.08em;line-height:1.35}
+h1,h2{font-family:var(--display);margin:0;text-wrap:balance;font-weight:700;letter-spacing:-.01em}
+h1{font-size:2em;line-height:1.02}
+h2{font-size:1.45em;line-height:1.1}
+p{margin:0;line-height:1.3}
+b,strong{color:var(--accent)}
+.olho{font-size:.42em;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.grande{font-family:var(--display);font-size:1.5em;line-height:1.15;text-wrap:balance}
+.enorme{font-family:var(--display);font-size:2.3em;line-height:1.02;font-weight:700;color:var(--accent)}
+.suave{color:var(--muted)}
+blockquote{margin:0;font-family:var(--display);font-size:1.25em;line-height:1.25;padding-left:.7em;border-left:.1em solid var(--accent)}
+cite{display:block;font-family:var(--body);font-style:normal;font-size:.5em;color:var(--muted);margin-top:.7em}
+.cena{font-family:var(--display);font-size:1.3em;line-height:1.22}
+
+figure{margin:0;display:flex;flex-direction:column;gap:.25em;min-width:0}
+figure img{display:block;width:100%;max-width:100%;height:min(64vh,15em);object-fit:cover;border-radius:.15em;box-shadow:0 .3em 1em rgba(19,28,51,.18);background:var(--line)}
+figcaption{font-size:.3em;color:var(--muted);line-height:1.3}
+figcaption span{display:block;font-size:1.6em;font-weight:700;color:var(--ink)}
+.par{display:grid;grid-template-columns:1fr 1fr;gap:.5em}
+.par img{height:min(52vh,11em)}
+
+.linhas{display:flex;flex-direction:column;gap:.4em}
+.linha{display:flex;flex-wrap:wrap;align-items:baseline;gap:.15em .7em;font-family:var(--display);font-size:1.2em;line-height:1.2;padding-bottom:.35em;border-bottom:1px solid var(--line)}
+.num{color:var(--accent);font-weight:700;min-width:1.1em}
+.rot{font-family:var(--body);font-size:.5em;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.dupla{display:grid;grid-template-columns:repeat(auto-fit,minmax(9em,1fr));gap:1em}
+.dupla > div{border-top:.1em solid var(--accent);padding-top:.4em;display:flex;flex-direction:column;gap:.25em;min-width:0}
+.dupla strong{font-family:var(--display);font-size:1.2em;color:var(--ink)}
+.creditos{font-size:.28em;color:var(--muted);line-height:1.5}
+
 .step{visibility:hidden;opacity:0;transition:opacity .25s}
 .step.vis{visibility:visible;opacity:1}
-.nota{display:none;font-size:.6em;color:var(--warm);background:var(--warm-soft);padding:.5em .7em;border-radius:.4em}
-.notas .nota{display:block}
 
-.grade{display:grid;grid-template-columns:repeat(auto-fit,minmax(11em,1fr));gap:.5em}
-.dupla{display:grid;grid-template-columns:repeat(auto-fit,minmax(12em,1fr));gap:.6em}
-.dupla > div{background:var(--surface);border:1px solid var(--line);border-radius:.4em;padding:.6em .8em;min-width:0;font-size:.88em;display:flex;flex-direction:column;gap:.3em}
-.dupla strong{font-family:var(--display);font-size:1.15em}
-
-.regra{background:var(--surface);border:1px solid var(--line);border-radius:.4em;padding:.5em .7em;font-size:.8em;display:flex;flex-direction:column;gap:.2em;min-width:0}
-.regra b{color:var(--accent);font-family:var(--display);font-size:1.15em}
-
-.carta{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:.4em;padding:.55em .7em;display:flex;flex-direction:column;gap:.35em;font-size:.82em;line-height:1.3;min-width:0}
-.carta .resp{visibility:hidden;font-size:.82em;font-weight:700}
-.carta.aberta .resp{visibility:visible}
-.carta[data-c="f"] .resp{color:var(--accent)} .carta.aberta[data-c="f"]{background:var(--accent-soft);border-color:var(--accent)}
-.carta[data-c="g"] .resp{color:var(--warm)} .carta.aberta[data-c="g"]{background:var(--warm-soft);border-color:var(--warm)}
-.carta[data-c="p"] .resp{color:var(--ok)} .carta.aberta[data-c="p"]{background:var(--ok-soft);border-color:var(--ok)}
-.carta[data-c="x"] .resp{color:var(--bad)} .carta.aberta[data-c="x"]{background:var(--bad-soft);border-color:var(--bad)}
-
-.quiz{display:flex;flex-direction:column;gap:.6em}
-.ops{display:grid;grid-template-columns:repeat(auto-fit,minmax(13em,1fr));gap:.45em}
-.op{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:.4em;padding:.5em .7em;font-size:.82em;line-height:1.3;min-width:0}
-.op.certa{background:var(--ok-soft);border-color:var(--ok);font-weight:700}
-.op.errada{background:var(--bad-soft);border-color:var(--bad);color:var(--muted)}
-.fb{font-size:.8em;background:var(--ok-soft);border-radius:.4em;padding:.55em .75em}
-
-.votos{display:flex;flex-direction:column;gap:.45em}
-.voto{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr) 2.2em 2em;gap:.5em;align-items:center;font-size:.85em}
-.voto .mais{text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:.4em;padding:.45em .65em}
-.voto .menos{border:1px solid var(--line);background:transparent;border-radius:.4em;padding:.2em 0}
-.voto b{font-variant-numeric:tabular-nums;text-align:right}
-.barra{height:.9em;background:var(--line);border-radius:1em;overflow:hidden}
-.barra i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
-@media (max-width:560px){
-  .voto{grid-template-columns:minmax(0,1fr) 2.2em 2em}
-  .voto .barra{grid-column:1 / -1;grid-row:2}
-}
-
-.tabela{overflow-x:auto}
-table{border-collapse:collapse;width:100%;font-size:.75em}
-th,td{border-bottom:1px solid var(--line);padding:.35em .5em;text-align:left}
-th:nth-child(n+2),td:nth-child(n+2){text-align:center;width:7em}
-.pt{min-width:2.8em;border:1px solid var(--line);background:var(--surface);border-radius:.35em;padding:.2em .4em;font-variant-numeric:tabular-nums;font-weight:700}
-tfoot td{font-weight:700;border-bottom:0}
-.leve{border:1px solid var(--line);background:transparent;border-radius:.35em;padding:.25em .6em;font-size:.7em;align-self:flex-start}
-
-.rodape{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem;padding-block:.5rem;font-size:.8rem;color:var(--muted)}
-.prog{flex:1 1 100%;height:3px;background:var(--line)}
+.rodape{display:flex;align-items:center;gap:.5rem;padding-block:.4rem;font-size:.75rem;color:var(--muted);position:relative}
+.prog{position:absolute;left:0;right:0;top:0;height:3px;background:var(--line)}
 .prog i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
-.rodape button{border:1px solid var(--line);background:var(--surface);border-radius:.35rem;padding:.3rem .6rem;color:var(--ink)}
-.rodape .nav{font-size:1rem;padding:.2rem .85rem}
+.rodape button{border:1px solid var(--line);background:var(--surface);border-radius:.35rem;padding:.25rem .6rem;color:var(--ink)}
+.rodape .nav{font-size:1rem;padding:.15rem .8rem}
 #cont{font-variant-numeric:tabular-nums;min-width:4.2em;text-align:center}
-.relogio{display:flex;flex-wrap:wrap;align-items:center;gap:.3rem;margin-left:auto}
-.relogio output{font-variant-numeric:tabular-nums;font-weight:700;color:var(--ink);min-width:3.4em;text-align:center;font-size:1.05rem}
-.relogio.fim output{color:var(--bad)}
+.rodape .fim{margin-left:auto}
 
 .mapa{position:fixed;inset:0;z-index:20;background:var(--bg);overflow:auto;
   padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
 .mapa-in{max-width:46rem;margin:0 auto;display:flex;flex-direction:column;gap:.35rem}
 .mapa h2{font-size:1.6rem;margin-bottom:.4rem}
-.ir{display:grid;grid-template-columns:2.2em minmax(0,1fr) auto;gap:.6em;align-items:baseline;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:.35rem;padding:.45rem .7rem;font-size:.95rem}
+.ir{display:grid;grid-template-columns:2.2em minmax(0,1fr);gap:.6em;align-items:baseline;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:.35rem;padding:.45rem .7rem;font-size:.95rem}
 .ir span:first-child{color:var(--muted);font-variant-numeric:tabular-nums}
-.ir span:last-child{color:var(--muted);font-size:.75em;text-transform:uppercase;letter-spacing:.06em}
-.ir.atual{border-color:var(--accent);background:var(--accent-soft)}
+.ir.atual{border-color:var(--accent)}
+
+@media (max-width:700px){
+  .foto{grid-template-columns:minmax(0,1fr)}
+  figure img{height:min(38vh,13em)}
+}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 
 <div class="deck" id="deck">
-  <div class="topo"><span>Hermenêutica Jurídica · Aula 13</span><span id="bloco">Abertura</span></div>
-
   <main class="palco" id="palco">
 
-    <section class="slide on" data-b="Abertura" data-t="Capa">
-      <span class="olho">Direito · 2º período · 23/11/2026</span>
-      <h1>Argumentação Jurídica</h1>
-      <p class="grande">Habermas e Alexy</p>
-      <p class="tarefa">Pergunta da aula: <b>se ponderar é dar peso aos princípios, quem confere a balança?</b></p>
-      <p class="nota">Roteiro (100 min): abertura 10 · Habermas 20 · regras e árbitro 20 · caso especial e CPC 15 · júri do discurso 25 · quiz e gancho 10. Teclas: setas avançam e voltam, M abre o mapa, N mostra estas notas, F tela cheia.</p>
-    </section>
-
-    <section class="slide" data-b="Abertura" data-t="Votação: é só opinião?">
-      <span class="olho">Levante a mão</span>
-      <h2>Dá para discutir racionalmente se uma decisão é justa?</h2>
-      <div class="votos">
-        <div class="voto" data-n="0"><button type="button" class="mais">Não. No fim, é a opinião de cada um.</button><span class="barra"><i></i></span><b>0</b><button type="button" class="menos" aria-label="Tirar um voto">−</button></div>
-        <div class="voto" data-n="0"><button type="button" class="mais">Sim. Há argumentos melhores e piores.</button><span class="barra"><i></i></span><b>0</b><button type="button" class="menos" aria-label="Tirar um voto">−</button></div>
-        <div class="voto" data-n="0"><button type="button" class="mais">Só em parte. Depende do assunto.</button><span class="barra"><i></i></span><b>0</b><button type="button" class="menos" aria-label="Tirar um voto">−</button></div>
+    <section class="slide foto on" data-t="Capa">
+      <div class="txt">
+        <span class="olho">Hermenêutica Jurídica · Aula 13</span>
+        <h1>Argumentação Jurídica</h1>
+        <p class="grande">Habermas e Alexy</p>
       </div>
-      <p class="menor">Guardem o resultado. A votação volta no fim da aula.</p>
-      <p class="nota">Conte as mãos e clique na opção uma vez por voto (o botão − corrige). Peça a um aluno de cada posição uma frase de justificativa.</p>
+      <div class="par">
+        <figure><img src="img/habermas.jpg" alt="Retrato de Jürgen Habermas"><figcaption><span>Jürgen Habermas</span></figcaption></figure>
+        <figure><img src="img/alexy.jpg" alt="Retrato de Robert Alexy"><figcaption><span>Robert Alexy</span></figcaption></figure>
+      </div>
     </section>
 
-    <section class="slide" data-b="Abertura" data-t="Aula passada: a balança de Alexy">
-      <span class="olho">De onde viemos</span>
-      <h2>Aula passada: a balança de Alexy</h2>
+    <section class="slide foto" data-t="Quem confere a balança?">
+      <div class="txt">
+        <span class="olho">A pergunta de hoje</span>
+        <h2>Ponderar é dar peso aos princípios.</h2>
+        <p class="grande step"><b>Quem confere a balança?</b></p>
+      </div>
+      <figure><img src="img/justica.jpg" alt="Escultura A Justiça, em frente ao Supremo Tribunal Federal"><figcaption>A Justiça, de Alfredo Ceschiatti. Foto: Filipo Tardim, CC BY-SA 4.0</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="Aula passada: a lei da ponderação">
+      <span class="olho">Aula passada</span>
       <blockquote>“Quanto maior é o grau de não satisfação ou de prejuízo de um dos princípios, tanto maior deve ser a importância da satisfação do outro.”<cite>Alexy, a lei da ponderação</cite></blockquote>
-      <p>Intervenção leve, média ou grave. Importância leve, média ou grave.</p>
-      <p class="grande step">Mas quem disse que é grave?</p>
-      <p class="step">Se o juiz só afirma o peso, voltamos ao poder discricionário de Kelsen e Hart. A resposta de Alexy: <b>o peso precisa ser justificado com argumentos</b>. Por isso ele tem uma teoria da argumentação.</p>
-      <p class="nota">Ligue com a aula 11 (proporcionalidade) e com a aula 7 (poder discricionário). A aula de hoje responde: como controlar racionalmente a ponderação?</p>
     </section>
 
-    <section class="slide" data-b="Habermas" data-t="Fato, gosto ou questão prática?">
-      <span class="olho">Habermas · exercício</span>
-      <h2>Fato, gosto ou questão prática?</h2>
-      <p class="tarefa">A turma decide frase por frase. <b>Clique para conferir.</b></p>
-      <div class="grade">
-        <button type="button" class="carta" data-c="f">A água ferve a 100 °C ao nível do mar.<span class="resp">Fato: dá para verificar no mundo.</span></button>
-        <button type="button" class="carta" data-c="g">Pistache é melhor que chocolate.<span class="resp">Gosto: não se discute.</span></button>
-        <button type="button" class="carta" data-c="p">A escravidão é injusta.<span class="resp">Questão prática: sobre o que se deve fazer.</span></button>
-        <button type="button" class="carta" data-c="f">O réu estava no local às 22h.<span class="resp">Fato: prova-se ou não.</span></button>
-        <button type="button" class="carta" data-c="g">Sertanejo é melhor que funk.<span class="resp">Gosto: não se discute.</span></button>
-        <button type="button" class="carta" data-c="p">Negar o Holocausto em livro deve ser crime.<span class="resp">Questão prática: e é o caso da próxima aula.</span></button>
-      </div>
-      <p class="step">Para Kelsen, a justiça fica do lado do gosto: é relativa e está fora da ciência. Habermas discorda: <b>questões práticas também admitem razão</b>.</p>
-      <p class="nota">Provoque: "a escravidão é injusta" é como "pistache é melhor"? Ninguém aceita isso. Então há algo além de gosto, mesmo sem um fato para apontar.</p>
+    <section class="slide" data-t="Quem disse que é grave?">
+      <p class="grande">Leve, médio ou grave.</p>
+      <p class="enorme step">Mas quem disse que é grave?</p>
+      <p class="step suave">Sem justificativa, o peso é só a vontade do juiz.</p>
     </section>
 
-    <section class="slide" data-b="Habermas" data-t="A verdade se constrói discutindo">
-      <span class="olho">Habermas · teoria consensual da verdade</span>
-      <h2>A verdade se constrói discutindo</h2>
-      <div class="dupla">
-        <div><strong>Aristóteles</strong><span>Verdade é correspondência: a frase bate com o mundo.</span></div>
-        <div><strong>Habermas</strong><span>Verdade é consenso racional: a frase resistiria à discussão com todos.</span></div>
+    <section class="slide" data-t="A resposta de Alexy">
+      <span class="olho">A resposta de Alexy</span>
+      <p class="grande">O peso precisa ser <b>justificado com argumentos</b>.</p>
+      <p class="step">Por isso ele tem uma teoria da argumentação jurídica.</p>
+    </section>
+
+    <section class="slide foto" data-t="Parte 1: Habermas">
+      <div class="txt">
+        <span class="olho">Parte 1</span>
+        <h1>Habermas</h1>
+        <p class="grande">A teoria do discurso</p>
       </div>
+      <figure><img src="img/habermas.jpg" alt="Retrato de Jürgen Habermas"><figcaption><span>Jürgen Habermas</span>Foto: Wolfram Huke, CC BY-SA 3.0</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="Fato, gosto ou outra coisa?">
+      <h2>Fato, gosto ou outra coisa?</h2>
+      <div class="linhas">
+        <div class="linha"><span>“A água ferve a 100 °C.”</span><span class="rot step">Fato</span></div>
+        <div class="linha"><span>“Pistache é melhor que chocolate.”</span><span class="rot step">Gosto</span></div>
+        <div class="linha"><span>“A escravidão é injusta.”</span><span class="rot step">Questão prática</span></div>
+      </div>
+    </section>
+
+    <section class="slide foto" data-t="Kelsen: justiça é como gosto">
+      <div class="txt">
+        <span class="olho">O positivismo</span>
+        <h2>Para Kelsen, justiça é como gosto.</h2>
+        <p>Relativa. Fora da ciência.</p>
+        <p class="grande step"><b>Habermas discorda.</b></p>
+      </div>
+      <figure><img src="img/kelsen.jpg" alt="Busto de Hans Kelsen"><figcaption><span>Hans Kelsen</span>Busto na Universidade de Viena. Foto: Hubertl, CC BY-SA 4.0</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="Questões práticas admitem razão">
+      <span class="olho">Habermas</span>
+      <p class="enorme">Questões práticas também admitem razão.</p>
+    </section>
+
+    <section class="slide foto" data-t="Aristóteles: verdade como correspondência">
+      <div class="txt">
+        <span class="olho">O que é verdade? Resposta antiga</span>
+        <h2>Correspondência</h2>
+        <p class="grande">A frase bate com o mundo.</p>
+      </div>
+      <figure><img src="img/aristoteles.jpg" alt="Busto de Aristóteles"><figcaption><span>Aristóteles</span>Cópia romana de Lisipo, Palazzo Altemps. Domínio público</figcaption></figure>
+    </section>
+
+    <section class="slide foto" data-t="Habermas: verdade como consenso">
+      <div class="txt">
+        <span class="olho">O que é verdade? Resposta de Habermas</span>
+        <h2>Consenso racional</h2>
+        <p class="grande">A frase resistiria à discussão com todos.</p>
+      </div>
+      <figure><img src="img/habermas.jpg" alt="Retrato de Jürgen Habermas"><figcaption><span>Jürgen Habermas</span>Foto: Wolfram Huke, CC BY-SA 3.0</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="Citação: o assentimento de todos">
       <blockquote>“A condição para a verdade dos enunciados é o assentimento potencial de todos os demais.”<cite>Habermas</cite></blockquote>
-      <p class="step">Nas questões práticas, essa verdade tem outro nome: <b>correção</b>.</p>
-      <p class="nota">Não é o consenso de fato, de hoje, desta sala. É o assentimento potencial de todos com quem eu pudesse discutir, inclusive os oponentes.</p>
     </section>
 
-    <section class="slide" data-b="Habermas" data-t="Qualquer consenso vale?">
-      <span class="olho">Habermas · exercício</span>
+    <section class="slide" data-t="A verdade prática se chama correção">
+      <p class="grande">Nas questões práticas, a verdade tem outro nome:</p>
+      <p class="enorme step">correção.</p>
+    </section>
+
+    <section class="slide" data-t="Qualquer consenso vale?">
       <h2>Mas qualquer consenso vale?</h2>
-      <p class="tarefa">O que há de errado em cada consenso? <b>Clique para conferir.</b></p>
-      <div class="grade">
-        <button type="button" class="carta" data-c="x">O grupo da família decidiu, por 12 a 3, que a notícia é verdadeira.<span class="resp">Maioria não é argumento.</span></button>
-        <button type="button" class="carta" data-c="x">Na reunião, todos concordaram depois que o chefe falou.<span class="resp">Houve coerção: ninguém discorda do chefe.</span></button>
-        <button type="button" class="carta" data-c="x">A assembleia aprovou, mas quem era contra não teve a palavra.<span class="resp">Faltou participação.</span></button>
+      <div class="linhas">
+        <div class="linha step"><span>A maioria venceu no grito.</span></div>
+        <div class="linha step"><span>Todos concordaram com o chefe.</span></div>
+        <div class="linha step"><span>Quem discordava não pôde falar.</span></div>
       </div>
-      <p class="grande step">Só vale o consenso obtido <b>seguindo regras</b>.</p>
-      <blockquote class="step">“Há, portanto, identidade no discurso entre racionalidade e correção.”<cite>Cláudia Toledo</cite></blockquote>
-      <p class="nota">É assim que se distingue discurso racional de mera opinião: é correto o que é discursivamente racional.</p>
     </section>
 
-    <section class="slide" data-b="Habermas" data-t="A situação ideal de fala">
+    <section class="slide" data-t="Só o consenso obtido com regras">
+      <p class="grande">Só vale o consenso obtido <b>seguindo regras</b>.</p>
+      <blockquote class="step">“Há, portanto, identidade no discurso entre racionalidade e correção.”<cite>Cláudia Toledo</cite></blockquote>
+    </section>
+
+    <section class="slide" data-t="A situação ideal de fala">
       <span class="olho">Habermas</span>
       <h2>A situação ideal de fala</h2>
-      <ul>
-        <li>Todos podem falar e questionar.</li>
-        <li>Ninguém é coagido.</li>
-        <li>Só vence o melhor argumento.</li>
-      </ul>
-      <p>Ela não existe em lugar nenhum. É uma <b>ideia reguladora</b>: a régua com que medimos os debates reais.</p>
-      <p class="tarefa step">Em dupla, 2 minutos: lembre um debate real (CPI, júri, audiência pública, reunião de condomínio). <b>O que faltou para ser ideal?</b></p>
-      <p class="nota">Use o cronômetro de 2 min no rodapé. Colha três respostas e nomeie o que faltou. Isso prepara as regras do próximo slide.</p>
+      <div class="linhas">
+        <div class="linha"><span>Todos podem falar.</span></div>
+        <div class="linha"><span>Ninguém é coagido.</span></div>
+        <div class="linha"><span>Só vence o melhor argumento.</span></div>
+      </div>
     </section>
 
-    <section class="slide" data-b="Regras do discurso" data-t="As regras do discurso racional">
-      <span class="olho">Alexy</span>
+    <section class="slide" data-t="Uma ideia reguladora">
+      <p class="grande">Ela não existe em lugar nenhum.</p>
+      <p class="grande step">É uma <b>ideia reguladora</b>: a régua com que medimos os debates reais.</p>
+    </section>
+
+    <section class="slide" data-t="Para a turma: um debate real">
+      <span class="olho">Para a turma</span>
+      <p class="grande">Lembre um debate real: CPI, júri, reunião de condomínio.</p>
+      <p class="enorme">O que faltou para ser ideal?</p>
+    </section>
+
+    <section class="slide foto" data-t="Parte 2: Alexy">
+      <div class="txt">
+        <span class="olho">Parte 2</span>
+        <h1>Alexy</h1>
+        <p class="grande">A teoria da argumentação jurídica</p>
+      </div>
+      <figure><img src="img/alexy.jpg" alt="Retrato de Robert Alexy"><figcaption><span>Robert Alexy (1945-2026)</span>Foto: Contrib32523, CC BY-SA 4.0</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="As regras do discurso racional">
       <h2>As regras do discurso racional</h2>
-      <div class="grade">
-        <div class="regra"><b>1. Não contradição</b><span>Ninguém pode se contradizer.</span></div>
-        <div class="regra"><b>2. Sinceridade</b><span>Só afirmar aquilo em que se acredita.</span></div>
-        <div class="regra"><b>3. Coerência</b><span>O que vale para um caso vale para os casos iguais.</span></div>
-        <div class="regra"><b>4. Fundamentação</b><span>Quem afirma deve fundamentar, se lhe pedirem.</span></div>
-        <div class="regra"><b>5. Participação</b><span>Qualquer um pode participar, afirmar e questionar, sem coerção.</span></div>
-        <div class="regra"><b>6. Carga da argumentação</b><span>Quem trata A diferente de B precisa justificar.</span></div>
-      </div>
-      <p class="menor">Habermas condensa a regra 5 no princípio do discurso (D): só valem as normas com que todos os atingidos poderiam concordar em um discurso racional.</p>
-      <p class="nota">São exemplos, não a lista completa de Alexy. Avise que os números serão usados no jogo a seguir e no júri do fim da aula.</p>
-    </section>
-
-    <section class="slide" data-b="Regras do discurso" data-t="Árbitro 1: a decisão de uma linha">
-      <span class="olho">Árbitro do discurso · 1 de 6</span>
-      <h2>Qual regra foi violada?</h2>
-      <p class="cena">“Indefiro o pedido, por ausência dos requisitos legais.”<br>É a decisão inteira.</p>
-      <div class="quiz">
-        <div class="ops">
-          <button type="button" class="op">Não contradição</button>
-          <button type="button" class="op" data-ok>Fundamentação</button>
-          <button type="button" class="op">Participação</button>
-          <button type="button" class="op">Sinceridade</button>
-        </div>
-        <p class="fb" hidden><b>Fundamentação.</b> A Constituição exige decisões fundamentadas, sob pena de nulidade (art. 93, IX). O CPC não considera fundamentada a decisão que invoca motivos que serviriam para justificar qualquer outra (art. 489, § 1º, III).</p>
-      </div>
-      <p class="nota">Peça o voto da turma antes de clicar. Clique na opção mais votada: se errar, fica vermelha e a turma tenta de novo.</p>
-    </section>
-
-    <section class="slide" data-b="Regras do discurso" data-t="Árbitro 2: março e abril">
-      <span class="olho">Árbitro do discurso · 2 de 6</span>
-      <h2>Qual regra foi violada?</h2>
-      <p class="cena">Em março, o juiz condena o banco: negativar o nome de quem não deve gera dano moral. Em abril, em caso idêntico, julga improcedente: “mero aborrecimento”. Não explica a diferença.</p>
-      <div class="quiz">
-        <div class="ops">
-          <button type="button" class="op">Sinceridade</button>
-          <button type="button" class="op">Participação</button>
-          <button type="button" class="op" data-ok>Coerência</button>
-          <button type="button" class="op">Não contradição</button>
-        </div>
-        <p class="fb" hidden><b>Coerência</b> (e carga da argumentação). Casos iguais pedem o mesmo tratamento; para tratar diferente, é preciso justificar. É a integridade de Dworkin e o art. 926 do CPC: jurisprudência estável, íntegra e coerente.</p>
-      </div>
-      <p class="nota">Se disserem "não contradição": não é contradição lógica dentro de uma mesma fala, é tratar casos iguais de forma desigual. Retome Dworkin (aula 9).</p>
-    </section>
-
-    <section class="slide" data-b="Regras do discurso" data-t="Árbitro 3: o microfone">
-      <span class="olho">Árbitro do discurso · 3 de 6</span>
-      <h2>Qual regra foi violada?</h2>
-      <p class="cena">Audiência pública sobre um projeto de lei. O presidente da mesa só dá a palavra a quem apoia o projeto e manda desligar o microfone dos demais.</p>
-      <div class="quiz">
-        <div class="ops">
-          <button type="button" class="op" data-ok>Participação</button>
-          <button type="button" class="op">Coerência</button>
-          <button type="button" class="op">Sinceridade</button>
-          <button type="button" class="op">Fundamentação</button>
-        </div>
-        <p class="fb" hidden><b>Participação.</b> Qualquer um pode tomar parte, afirmar e questionar, e ninguém pode ser impedido por coerção. O consenso obtido assim não legitima nada.</p>
+      <div class="linhas">
+        <div class="linha"><span class="num">1</span><span>Não contradição</span></div>
+        <div class="linha"><span class="num">2</span><span>Sinceridade</span></div>
+        <div class="linha"><span class="num">3</span><span>Coerência</span></div>
+        <div class="linha"><span class="num">4</span><span>Fundamentação</span></div>
+        <div class="linha"><span class="num">5</span><span>Participação</span></div>
       </div>
     </section>
 
-    <section class="slide" data-b="Regras do discurso" data-t="Árbitro 4: o voto">
-      <span class="olho">Árbitro do discurso · 4 de 6</span>
-      <h2>Qual regra foi violada?</h2>
-      <p class="cena">No voto: “A liberdade de expressão é absoluta e não admite restrição alguma.” Três páginas depois: “Por isso, mantenho a proibição do livro.”</p>
-      <div class="quiz">
-        <div class="ops">
-          <button type="button" class="op">Participação</button>
-          <button type="button" class="op">Carga da argumentação</button>
-          <button type="button" class="op">Sinceridade</button>
-          <button type="button" class="op" data-ok>Não contradição</button>
-        </div>
-        <p class="fb" hidden><b>Não contradição.</b> As duas afirmações não podem ser verdadeiras ao mesmo tempo. Uma decisão assim nem chega a ser avaliada: não se sabe o que ela afirma.</p>
+    <section class="slide" data-t="Caso 1: a decisão de uma linha">
+      <span class="olho">Qual regra foi violada? · Caso 1</span>
+      <p class="cena">“Indefiro o pedido, por ausência dos requisitos legais.”</p>
+      <p class="suave">É a decisão inteira.</p>
+      <p class="enorme step">Fundamentação</p>
+      <p class="step">CF, art. 93, IX: decisão sem fundamentação é nula.</p>
+    </section>
+
+    <section class="slide" data-t="Caso 2: março e abril">
+      <span class="olho">Qual regra foi violada? · Caso 2</span>
+      <p class="cena">Em março, o juiz condena o banco por dano moral. Em abril, em caso idêntico, absolve. Não explica a diferença.</p>
+      <p class="enorme step">Coerência</p>
+      <p class="step">Casos iguais, mesmo tratamento.</p>
+    </section>
+
+    <section class="slide foto" data-t="Lembra de Dworkin?">
+      <div class="txt">
+        <span class="olho">Lembra de Dworkin?</span>
+        <h2>Integridade</h2>
+        <p>CPC, art. 926: jurisprudência <b>estável, íntegra e coerente</b>.</p>
+      </div>
+      <figure><img src="img/dworkin.jpg" alt="Retrato de Ronald Dworkin"><figcaption><span>Ronald Dworkin</span>Foto: David Shankbone, CC BY-SA 3.0</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="Caso 3: o microfone">
+      <span class="olho">Qual regra foi violada? · Caso 3</span>
+      <p class="cena">Na audiência pública, o presidente só dá a palavra a quem apoia o projeto.</p>
+      <p class="enorme step">Participação</p>
+      <p class="step">Qualquer um pode falar e questionar, sem coerção.</p>
+    </section>
+
+    <section class="slide" data-t="Caso 4: o voto">
+      <span class="olho">Qual regra foi violada? · Caso 4</span>
+      <p class="cena">“A liberdade de expressão é absoluta.”<br>Três páginas depois: “Mantenho a proibição do livro.”</p>
+      <p class="enorme step">Não contradição</p>
+    </section>
+
+    <section class="slide" data-t="Caso 5: a advogada">
+      <span class="olho">Qual regra foi violada? · Caso 5</span>
+      <p class="cena">A advogada defende com veemência uma tese em que não acredita.</p>
+      <p class="enorme step">Sinceridade?</p>
+      <p class="step">Mas advogada pode. E agora?</p>
+    </section>
+
+    <section class="slide" data-t="A objeção e a resposta de Alexy">
+      <span class="olho">A objeção</span>
+      <p class="grande">No processo, as partes querem ganhar, não achar a resposta correta.</p>
+      <p class="step"><b>Alexy:</b> mesmo assim, ninguém pede “condene, ainda que seja injusto”.</p>
+    </section>
+
+    <section class="slide" data-t="A tese do caso especial">
+      <span class="olho">Alexy · a tese do caso especial</span>
+      <p class="enorme">O discurso jurídico é um caso especial do discurso prático geral.</p>
+    </section>
+
+    <section class="slide" data-t="Por que caso especial?">
+      <h2>Por quê?</h2>
+      <div class="linhas">
+        <div class="linha step"><span>Trata de <b>questões práticas</b>.</span></div>
+        <div class="linha step"><span>Levanta <b>pretensão de correção</b>.</span></div>
+        <div class="linha step"><span>Acontece <b>sob limitações</b>.</span></div>
       </div>
     </section>
 
-    <section class="slide" data-b="Regras do discurso" data-t="Árbitro 5: o deputado">
-      <span class="olho">Árbitro do discurso · 5 de 6</span>
-      <h2>Qual regra foi violada?</h2>
-      <p class="cena">Um deputado defende: “Investigado não pode ocupar cargo público.” Quando o investigado é do seu partido: “Investigação não é condenação.”</p>
-      <div class="quiz">
-        <div class="ops">
-          <button type="button" class="op">Fundamentação</button>
-          <button type="button" class="op" data-ok>Coerência</button>
-          <button type="button" class="op">Participação</button>
-          <button type="button" class="op">Não contradição</button>
-        </div>
-        <p class="fb" hidden><b>Coerência.</b> Quem aplica um critério a um caso deve aplicá-lo a todos os casos iguais nos aspectos essenciais. Teste prático: você aceitaria a regra se estivesse do outro lado?</p>
+    <section class="slide" data-t="As limitações">
+      <h2>As limitações</h2>
+      <div class="linhas">
+        <div class="linha"><span>A lei</span></div>
+        <div class="linha"><span>Os precedentes</span></div>
+        <div class="linha"><span>A dogmática</span></div>
+        <div class="linha"><span>O processo</span></div>
       </div>
     </section>
 
-    <section class="slide" data-b="Regras do discurso" data-t="Árbitro 6: a advogada">
-      <span class="olho">Árbitro do discurso · 6 de 6</span>
-      <h2>Houve violação?</h2>
-      <p class="cena">A advogada sustenta com veemência uma tese em que, no fundo, não acredita. É o melhor argumento que tem para o cliente.</p>
-      <div class="quiz">
-        <div class="ops">
-          <button type="button" class="op" data-ok>Sim: sinceridade</button>
-          <button type="button" class="op" data-ok>Não: advogada pode</button>
-        </div>
-        <p class="fb" hidden><b>As duas respostas têm razão, e essa é a principal objeção a Alexy.</b> No processo, as partes querem ganhar, não achar a resposta correta. Resposta dele: mesmo assim, ninguém pede “condene, ainda que seja injusto”. Todos apresentam seus argumentos como corretos. O processo é um discurso com regras próprias: um <b>caso especial</b>.</p>
+    <section class="slide foto" data-t="Mesa de bar ou tribunal?">
+      <div class="txt">
+        <span class="olho">Mesa de bar ou tribunal?</span>
+        <h2>Pode prender depois da 2ª instância?</h2>
+        <p class="step"><b>No bar:</b> “A impunidade revolta.”</p>
+        <p class="step"><b>No tribunal:</b> CF, art. 5º, LVII. ADCs 43, 44 e 54.</p>
       </div>
-      <p class="nota">Deixe a turma se dividir antes de clicar. Esta cena é a ponte para a tese do caso especial.</p>
+      <figure><img src="img/stf.jpg" alt="Sede do Supremo Tribunal Federal, em Brasília"><figcaption><span>Supremo Tribunal Federal</span>Foto: Leandro Neumann Ciuffo, CC BY 2.0</figcaption></figure>
     </section>
 
-    <section class="slide" data-b="Caso especial" data-t="A tese do caso especial">
-      <span class="olho">Alexy</span>
-      <h2>A tese do caso especial</h2>
-      <p class="grande">O discurso jurídico é um caso especial do discurso prático geral.</p>
-      <ul>
-        <li class="step">Trata de <b>questões práticas</b>: o que se deve fazer ou deixar de fazer.</li>
-        <li class="step">Levanta <b>pretensão de correção</b>: toda decisão se apresenta como correta.</li>
-        <li class="step">Acontece <b>sob limitações</b>: a lei, os precedentes, a dogmática e as regras do processo.</li>
-      </ul>
-      <p class="nota">Pretensão de correção já apareceu na aula 10 (não positivismo). Aqui ela explica por que o direito pertence ao discurso prático.</p>
+    <section class="slide" data-t="O argumento moral passa pelo direito">
+      <p class="grande">No tribunal, o argumento moral precisa passar pela <b>lei</b>, pelo <b>precedente</b> e pela <b>dogmática</b>.</p>
     </section>
 
-    <section class="slide" data-b="Caso especial" data-t="Mesa de bar ou tribunal?">
-      <span class="olho">Caso especial · exercício</span>
-      <h2>Mesa de bar ou tribunal?</h2>
-      <p class="tarefa">Pode prender depois da condenação em 2ª instância? <b>Onde vale cada argumento?</b></p>
-      <div class="grade">
-        <button type="button" class="carta" data-c="g">A impunidade revolta a população.<span class="resp">Discurso prático geral. No tribunal, sozinho, não basta.</span></button>
-        <button type="button" class="carta" data-c="f">CF, art. 5º, LVII: ninguém será considerado culpado até o trânsito em julgado.<span class="resp">Tribunal: a lei (aqui, a Constituição).</span></button>
-        <button type="button" class="carta" data-c="f">O STF decidiu assim nas ADCs 43, 44 e 54, em 2019.<span class="resp">Tribunal: o precedente.</span></button>
-        <button type="button" class="carta" data-c="g">Em vários países se prende antes do trânsito em julgado.<span class="resp">Discurso prático geral. Ajuda, mas não vincula.</span></button>
-        <button type="button" class="carta" data-c="f">A doutrina distingue prisão-pena de prisão cautelar.<span class="resp">Tribunal: a dogmática.</span></button>
-        <button type="button" class="carta" data-c="x">Porque eu acho.<span class="resp">Não vale em lugar nenhum: falta fundamentar.</span></button>
+    <section class="slide" data-t="Isso está no CPC">
+      <span class="olho">Isso está na lei brasileira</span>
+      <blockquote>“No caso de colisão entre normas, o juiz deve justificar o objeto e os critérios gerais da ponderação efetuada [...].”<cite>CPC, art. 489, § 2º</cite></blockquote>
+    </section>
+
+    <section class="slide" data-t="Quem pondera justifica o peso">
+      <p class="enorme">Quem pondera tem de justificar o peso.</p>
+    </section>
+
+    <section class="slide" data-t="Legitimidade">
+      <span class="olho">Por que isso importa</span>
+      <p class="grande">Juiz não é eleito.</p>
+      <p class="grande">De onde vem a legitimidade da decisão?</p>
+      <p class="grande step"><b>Dos argumentos</b>, que qualquer pessoa pode conferir e criticar.</p>
+    </section>
+
+    <section class="slide" data-t="Citação: Estado Democrático de Direito">
+      <blockquote>“Se se trata de um Estado Democrático de Direito, são imprescindíveis teorias da argumentação jurídica [...].”<cite>Cláudia Toledo</cite></blockquote>
+    </section>
+
+    <section class="slide" data-t="Para discutir: a biografia">
+      <span class="olho">Para discutir</span>
+      <p class="cena">Uma editora publica a biografia de um cantor famoso, sem autorização. Ele pede a proibição do livro.</p>
+    </section>
+
+    <section class="slide" data-t="Liberdade de expressão ou privacidade?">
+      <p class="enorme">Liberdade de expressão ou privacidade?</p>
+      <p class="grande step">Que peso você dá a cada uma? <b>Justifique.</b></p>
+    </section>
+
+    <section class="slide foto" data-t="O que o STF decidiu">
+      <div class="txt">
+        <span class="olho">O que o STF decidiu · ADI 4815 (2015)</span>
+        <h2>Biografia não depende de autorização prévia.</h2>
+        <p class="step">O abuso se resolve depois, com reparação.</p>
       </div>
-      <p class="step">No tribunal, o argumento moral continua presente, mas precisa passar pela lei, pelo precedente e pela dogmática.</p>
+      <figure><img src="img/justica.jpg" alt="Escultura A Justiça, em frente ao Supremo Tribunal Federal"><figcaption>A Justiça, de Alfredo Ceschiatti. Foto: Filipo Tardim, CC BY-SA 4.0</figcaption></figure>
     </section>
 
-    <section class="slide" data-b="Caso especial" data-t="Isso está na lei brasileira">
-      <span class="olho">Na prática</span>
-      <h2>Isso está na lei brasileira</h2>
-      <blockquote>“No caso de colisão entre normas, o juiz deve justificar o objeto e os critérios gerais da ponderação efetuada, enunciando as razões que autorizam a interferência na norma afastada e as premissas fáticas que fundamentam a conclusão.”<cite>CPC, art. 489, § 2º</cite></blockquote>
-      <ul>
-        <li>CF, art. 93, IX: decisão sem fundamentação é nula.</li>
-        <li>CPC, art. 489, § 1º: não vale a decisão que só cita a lei, usa conceito vago sem explicar ou serviria para qualquer caso.</li>
-      </ul>
-      <p class="tarefa step">O que o § 2º exige de quem pondera? <b>Justificar o peso.</b> É a ponte entre a aula passada e a de hoje.</p>
-      <p class="nota">A teoria de Alexy é analítico-normativa: descreve a estrutura dos argumentos e diz como eles devem ser. O art. 489 faz as duas coisas.</p>
+    <section class="slide" data-t="Próxima aula: o caso Ellwanger">
+      <span class="olho">Próxima aula · Caso Ellwanger, HC 82.424/RS (2003)</span>
+      <p class="enorme">Dois ministros, o mesmo método, resultados opostos.</p>
     </section>
 
-    <section class="slide" data-b="Caso especial" data-t="Por que isso importa: legitimidade">
-      <span class="olho">Democracia</span>
-      <h2>Por que isso importa: legitimidade</h2>
-      <p class="grande">Juiz não é eleito. De onde vem a legitimidade de uma decisão que afasta uma lei?</p>
-      <blockquote class="step">“Se se trata de um Estado Democrático de Direito, são imprescindíveis teorias da argumentação jurídica, de modo que se possam estabelecer normas que permitam o trâmite legítimo do discurso especificamente jurídico.”<cite>Cláudia Toledo</cite></blockquote>
-      <p class="step">Da fundamentação que qualquer pessoa pode conferir e criticar. Alexy chama isso de <b>institucionalização da democracia</b>: um critério democrático para a correção das decisões.</p>
-      <p class="nota">Pergunte antes de revelar. Respostas comuns: "da Constituição", "do concurso". Conduza para: a decisão se legitima pelos argumentos, porque eles podem ser cobrados.</p>
-    </section>
-
-    <section class="slide" data-b="Júri do discurso" data-t="Atividade: o júri do discurso">
-      <span class="olho">Atividade · 25 minutos</span>
-      <h2>O júri do discurso</h2>
-      <p class="cena">Uma editora vai publicar a biografia de um cantor famoso, sem autorização dele. O livro conta episódios da vida íntima. O cantor pede à Justiça que proíba a publicação.</p>
-      <p>Em jogo: <b>liberdade de expressão e de informação</b> contra <b>privacidade e honra</b>.</p>
-      <ul>
-        <li><b>Grupo A</b> defende a editora. <b>Grupo B</b> defende o cantor.</li>
-        <li><b>Árbitros</b> (o resto da turma) anotam quem viola as regras do discurso.</li>
-        <li>3 rodadas: A fala 2 min, B fala 2 min, os árbitros apontam as faltas.</li>
-        <li>Cada grupo precisa dizer o peso (leve, médio ou grave) <b>e justificar</b>.</li>
-      </ul>
-      <p class="nota">Divida a sala em três pelas fileiras. 3 min de preparação, depois as rodadas. Cronômetro no rodapé. O placar está no próximo slide.</p>
-    </section>
-
-    <section class="slide" data-b="Júri do discurso" data-t="Placar das faltas">
-      <span class="olho">Júri do discurso</span>
-      <h2>Placar das faltas</h2>
-      <div class="tabela">
-        <table>
-          <thead><tr><th>Regra violada</th><th>Grupo A (editora)</th><th>Grupo B (cantor)</th></tr></thead>
-          <tbody>
-            <tr><td>1. Não contradição</td><td><button type="button" class="pt" data-g="a">0</button></td><td><button type="button" class="pt" data-g="b">0</button></td></tr>
-            <tr><td>2. Sinceridade</td><td><button type="button" class="pt" data-g="a">0</button></td><td><button type="button" class="pt" data-g="b">0</button></td></tr>
-            <tr><td>3. Coerência</td><td><button type="button" class="pt" data-g="a">0</button></td><td><button type="button" class="pt" data-g="b">0</button></td></tr>
-            <tr><td>4. Fundamentação</td><td><button type="button" class="pt" data-g="a">0</button></td><td><button type="button" class="pt" data-g="b">0</button></td></tr>
-            <tr><td>5. Participação</td><td><button type="button" class="pt" data-g="a">0</button></td><td><button type="button" class="pt" data-g="b">0</button></td></tr>
-            <tr><td>6. Carga da argumentação</td><td><button type="button" class="pt" data-g="a">0</button></td><td><button type="button" class="pt" data-g="b">0</button></td></tr>
-          </tbody>
-          <tfoot><tr><td>Total de faltas</td><td id="ta">0</td><td id="tb">0</td></tr></tfoot>
-        </table>
-      </div>
-      <button type="button" class="leve" id="zera-placar">Zerar placar</button>
-      <p class="step"><b>O que o STF decidiu</b> (ADI 4815, 2015): por unanimidade, biografia não depende de autorização prévia. Eventual abuso se resolve depois, com reparação.</p>
-      <p class="tarefa step">Aos árbitros: ganhou quem argumentou melhor ou quem falou mais alto?</p>
-      <p class="nota">Cada clique no número soma uma falta. Só revele o STF depois do veredito dos árbitros.</p>
-    </section>
-
-    <section class="slide" data-b="Fechamento" data-t="Quiz 1: situação ideal de fala">
-      <span class="olho">Quiz relâmpago · 1 de 3</span>
-      <h2>A situação ideal de fala é:</h2>
-      <div class="quiz">
-        <div class="ops">
-          <button type="button" class="op">a descrição de como os tribunais realmente decidem</button>
-          <button type="button" class="op" data-ok>uma ideia reguladora, usada para avaliar os debates reais</button>
-          <button type="button" class="op">uma etapa do procedimento previsto no CPC</button>
-          <button type="button" class="op">o consenso da maioria dos participantes</button>
-        </div>
-        <p class="fb" hidden><b>Ideia reguladora.</b> Ela não precisa existir de fato para servir de critério.</p>
-      </div>
-    </section>
-
-    <section class="slide" data-b="Fechamento" data-t="Quiz 2: correção em Habermas">
-      <span class="olho">Quiz relâmpago · 2 de 3</span>
-      <h2>Para Habermas, uma norma é correta quando:</h2>
-      <div class="quiz">
-        <div class="ops">
-          <button type="button" class="op">corresponde a um fato do mundo, como nas ciências naturais</button>
-          <button type="button" class="op">foi editada pela autoridade competente</button>
-          <button type="button" class="op">expressa o sentimento de justiça do julgador</button>
-          <button type="button" class="op" data-ok>poderia receber o assentimento de todos em um discurso racional</button>
-        </div>
-        <p class="fb" hidden><b>Assentimento potencial de todos.</b> A correção é construída discursivamente, sob as regras do discurso.</p>
-      </div>
-    </section>
-
-    <section class="slide" data-b="Fechamento" data-t="Quiz 3: o caso especial">
-      <span class="olho">Quiz relâmpago · 3 de 3</span>
-      <h2>Qual argumento só existe por causa das limitações do discurso jurídico?</h2>
-      <div class="quiz">
-        <div class="ops">
-          <button type="button" class="op">“Essa medida trata pessoas iguais de modo desigual.”</button>
-          <button type="button" class="op">“As consequências seriam ruins para todos.”</button>
-          <button type="button" class="op" data-ok>“A pretensão está prescrita.”</button>
-          <button type="button" class="op">“Ninguém aceitaria essa regra se estivesse do outro lado.”</button>
-        </div>
-        <p class="fb" hidden><b>A prescrição.</b> Ela só existe porque há lei e processo. Os outros três valem em qualquer discussão prática. É o caso especial.</p>
-      </div>
-    </section>
-
-    <section class="slide" data-b="Fechamento" data-t="Votação de novo">
-      <span class="olho">Levante a mão, de novo</span>
-      <h2>Dá para discutir racionalmente se uma decisão é justa?</h2>
-      <div class="votos">
-        <div class="voto" data-n="0"><button type="button" class="mais">Não. No fim, é a opinião de cada um.</button><span class="barra"><i></i></span><b>0</b><button type="button" class="menos" aria-label="Tirar um voto">−</button></div>
-        <div class="voto" data-n="0"><button type="button" class="mais">Sim. Há argumentos melhores e piores.</button><span class="barra"><i></i></span><b>0</b><button type="button" class="menos" aria-label="Tirar um voto">−</button></div>
-        <div class="voto" data-n="0"><button type="button" class="mais">Só em parte. Depende do assunto.</button><span class="barra"><i></i></span><b>0</b><button type="button" class="menos" aria-label="Tirar um voto">−</button></div>
-      </div>
-      <p class="menor">Alguém mudou de lado? Por quê?</p>
-      <p class="nota">Compare com a votação do início (volte ao slide 2 pelo mapa, tecla M). Peça a quem mudou que explique com um argumento.</p>
-    </section>
-
-    <section class="slide" data-b="Fechamento" data-t="Gancho: o caso Ellwanger">
-      <span class="olho">Próxima aula · crítica à ponderação</span>
-      <h2>Dois ministros, o mesmo método, resultados opostos</h2>
-      <p>Caso Ellwanger (HC 82.424/RS, 2003): editor condenado por racismo por publicar livros que negavam o Holocausto.</p>
+    <section class="slide" data-t="Gilmar Mendes e Marco Aurélio">
+      <span class="olho">Caso Ellwanger</span>
       <div class="dupla">
-        <div><strong>Gilmar Mendes</strong><span>Aplica a proporcionalidade e mantém a condenação. Não se pode atribuir primazia à liberdade de expressão em face da igualdade e da dignidade humana.</span></div>
-        <div><strong>Marco Aurélio</strong><span>Aplica a proporcionalidade e concede a ordem. Não seria razoável restringir uma opinião em livro, ainda que preconceituosa, sem indícios de que incitará violência.</span></div>
+        <div><strong>Gilmar Mendes</strong><span>Aplica a proporcionalidade.</span><span class="step"><b>Mantém a condenação.</b></span></div>
+        <div><strong>Marco Aurélio</strong><span>Aplica a proporcionalidade.</span><span class="step"><b>Concede a ordem.</b></span></div>
       </div>
-      <p class="grande step">O uso da proporcionalidade é adequado para combater o poder discricionário do julgador?</p>
-      <p class="nota">Se sobrar tempo, discuta agora (deck 12 tem os votos completos). Se não, fica como pergunta para o Seminário 12, de quinta: o texto do Streck é justamente essa crítica.</p>
     </section>
 
-    <section class="slide" data-b="Fechamento" data-t="Para levar">
-      <span class="olho">Síntese</span>
+    <section class="slide" data-t="A pergunta que fica">
+      <span class="olho">Para pensar</span>
+      <p class="grande">O uso da proporcionalidade é adequado para combater o <b>poder discricionário</b> do julgador?</p>
+    </section>
+
+    <section class="slide" data-t="Para levar">
       <h2>Para levar</h2>
-      <ul>
-        <li>Questões práticas admitem razão: correto é o que resistiria a um discurso racional (Habermas).</li>
-        <li>O discurso tem regras, e o discurso jurídico é um caso especial, limitado por lei, precedente, dogmática e processo (Alexy).</li>
-        <li>Ponderar sem fundamentar é decidir por vontade. A fundamentação é o que se pode cobrar do juiz.</li>
-      </ul>
-      <p class="tarefa">Quinta, 26/11: <b>Seminário 12</b> (Streck, a discricionariedade em Dworkin e Alexy).</p>
-      <p class="menor">Vitor Medrado</p>
-      <p class="nota">Avisos: grupo do Seminário 12 apresenta na quinta. Combinar com o grupo do Seminário 13 a apresentação na segunda, 30/11, antes da Prova Final.</p>
+      <div class="linhas">
+        <div class="linha"><span>Questões práticas admitem razão.</span></div>
+        <div class="linha"><span>O discurso tem regras.</span></div>
+        <div class="linha"><span>Ponderar exige fundamentar.</span></div>
+      </div>
+    </section>
+
+    <section class="slide" data-t="Fim">
+      <span class="olho">Quinta, 26/11</span>
+      <h1>Seminário 12</h1>
+      <p class="grande">Streck: a discricionariedade em Dworkin e em Alexy</p>
+      <p class="suave">Vitor Medrado</p>
+      <p class="creditos">Imagens do Wikimedia Commons: Jürgen Habermas (Wolfram Huke, CC BY-SA 3.0); Robert Alexy (Contrib32523, CC BY-SA 4.0); Aristóteles, Palazzo Altemps (domínio público); busto de Hans Kelsen (Hubertl, CC BY-SA 4.0); Ronald Dworkin (David Shankbone, CC BY-SA 3.0); A Justiça (Filipo Tardim, CC BY-SA 4.0); Supremo Tribunal Federal (Leandro Neumann Ciuffo, CC BY 2.0). Fotos recortadas.</p>
     </section>
 
   </main>
@@ -490,18 +408,10 @@ tfoot td{font-weight:700;border-bottom:0}
   <div class="rodape">
     <div class="prog"><i id="prog"></i></div>
     <button type="button" class="nav" id="ant" aria-label="Voltar">‹</button>
-    <span id="cont">1 / 26</span>
+    <span id="cont">1 / 44</span>
     <button type="button" class="nav" id="prox" aria-label="Avançar">›</button>
-    <button type="button" id="b-mapa">Mapa</button>
-    <button type="button" id="b-notas">Notas</button>
+    <button type="button" id="b-mapa" class="fim">Mapa</button>
     <button type="button" id="b-cheia">Tela cheia</button>
-    <div class="relogio" id="relogio">
-      <output id="tempo">02:00</output>
-      <button type="button" class="pre" data-s="60">1 min</button>
-      <button type="button" class="pre" data-s="120">2 min</button>
-      <button type="button" class="pre" data-s="300">5 min</button>
-      <button type="button" id="vai">Iniciar</button>
-    </div>
   </div>
 </div>
 
@@ -516,13 +426,13 @@ tfoot td{font-weight:700;border-bottom:0}
 (function(){
   var slides=[].slice.call(document.querySelectorAll('.slide'));
   var total=slides.length, i=0;
-  var deck=document.getElementById('deck'), palco=document.getElementById('palco');
-  var cont=document.getElementById('cont'), prog=document.getElementById('prog'), bloco=document.getElementById('bloco');
+  var palco=document.getElementById('palco');
+  var cont=document.getElementById('cont'), prog=document.getElementById('prog');
   var mapa=document.getElementById('mapa'), lista=document.getElementById('lista');
 
   function passos(s){return [].slice.call(s.querySelectorAll('.step'));}
   function salva(){
-    try{localStorage.setItem('aula13-slide',String(i));}catch(e){}
+    try{localStorage.setItem('aula13v2-slide',String(i));}catch(e){}
     try{history.replaceState(null,'','#s'+(i+1));}catch(e){}
   }
   function mostra(n){
@@ -530,7 +440,6 @@ tfoot td{font-weight:700;border-bottom:0}
     slides.forEach(function(s,k){s.classList.toggle('on',k===i);});
     cont.textContent=(i+1)+' / '+total;
     prog.style.width=((i+1)/total*100)+'%';
-    bloco.textContent=slides[i].getAttribute('data-b')||'';
     palco.scrollTop=0;
     [].forEach.call(lista.children,function(b,k){b.classList.toggle('atual',k===i);});
     salva();
@@ -550,13 +459,10 @@ tfoot td{font-weight:700;border-bottom:0}
     var b=document.createElement('button'); b.type='button'; b.className='ir'; b.setAttribute('data-k',k);
     var n=document.createElement('span'); n.textContent=(k+1);
     var t=document.createElement('span'); t.textContent=s.getAttribute('data-t')||'';
-    var g=document.createElement('span'); g.textContent=s.getAttribute('data-b')||'';
-    b.appendChild(n); b.appendChild(t); b.appendChild(g); lista.appendChild(b);
+    b.appendChild(n); b.appendChild(t); lista.appendChild(b);
   });
-  function abreMapa(){mapa.hidden=false;}
   function fechaMapa(){mapa.hidden=true;}
   function alternaMapa(){mapa.hidden=!mapa.hidden;}
-  function alternaNotas(){deck.classList.toggle('notas');}
   function telaCheia(){
     try{
       var el=document.documentElement;
@@ -565,85 +471,14 @@ tfoot td{font-weight:700;border-bottom:0}
     }catch(e){}
   }
 
-  function pintaVotos(g){
-    var vs=[].slice.call(g.querySelectorAll('.voto'));
-    var t=vs.reduce(function(a,v){return a+(+v.getAttribute('data-n')||0);},0);
-    vs.forEach(function(v){
-      var n=+v.getAttribute('data-n')||0;
-      v.querySelector('b').textContent=n;
-      v.querySelector('.barra i').style.width=(t?n/t*100:0)+'%';
-    });
-  }
-  function somaPlacar(){
-    ['a','b'].forEach(function(g){
-      var s=0;
-      [].forEach.call(document.querySelectorAll('.pt[data-g="'+g+'"]'),function(x){s+=+x.textContent;});
-      document.getElementById('t'+g).textContent=s;
-    });
-  }
-
-  var resto=120, fim=0, rodando=null, ctx=null;
-  var saida=document.getElementById('tempo'), rel=document.getElementById('relogio'), vai=document.getElementById('vai');
-  function fmt(s){var m=Math.floor(s/60), r=s%60; return (m<10?'0':'')+m+':'+(r<10?'0':'')+r;}
-  function pintaTempo(){saida.textContent=fmt(resto); rel.classList.toggle('fim',resto===0);}
-  function para(){clearInterval(rodando); rodando=null; vai.textContent='Iniciar';}
-  function bip(){
-    try{
-      if(!ctx){return;}
-      [0,0.35,0.7].forEach(function(d){
-        var o=ctx.createOscillator(), g=ctx.createGain();
-        o.frequency.value=880; o.connect(g); g.connect(ctx.destination);
-        g.gain.setValueAtTime(0.2,ctx.currentTime+d);
-        g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+d+0.25);
-        o.start(ctx.currentTime+d); o.stop(ctx.currentTime+d+0.26);
-      });
-    }catch(e){}
-  }
-  function tique(){
-    resto=Math.max(0,Math.round((fim-Date.now())/1000));
-    pintaTempo();
-    if(resto===0){para(); bip();}
-  }
-  function alternaTempo(){
-    if(rodando){para(); return;}
-    if(resto===0){return;}
-    try{
-      var AC=window.AudioContext||window.webkitAudioContext;
-      if(AC&&!ctx){ctx=new AC();}
-      if(ctx&&ctx.resume){ctx.resume();}
-    }catch(e){}
-    fim=Date.now()+resto*1000;
-    rodando=setInterval(tique,250);
-    vai.textContent='Pausar';
-  }
-
   document.addEventListener('click',function(e){
     var b=e.target.closest?e.target.closest('button'):null;
     if(!b){return;}
     if(b.id==='prox'){prox();}
     else if(b.id==='ant'){ant();}
     else if(b.id==='b-mapa'){alternaMapa();}
-    else if(b.id==='b-notas'){alternaNotas();}
     else if(b.id==='b-cheia'){telaCheia();}
-    else if(b.id==='vai'){alternaTempo();}
-    else if(b.id==='zera-placar'){
-      [].forEach.call(document.querySelectorAll('.pt'),function(x){x.textContent='0';}); somaPlacar();
-    }
-    else if(b.classList.contains('pre')){para(); resto=+b.getAttribute('data-s'); pintaTempo();}
     else if(b.classList.contains('ir')){mostra(+b.getAttribute('data-k')); fechaMapa();}
-    else if(b.classList.contains('carta')){
-      b.classList.toggle('aberta'); b.setAttribute('aria-expanded',b.classList.contains('aberta')?'true':'false');
-    }
-    else if(b.classList.contains('op')){
-      if(b.hasAttribute('data-ok')){b.classList.add('certa'); b.closest('.quiz').querySelector('.fb').hidden=false;}
-      else{b.classList.add('errada');}
-    }
-    else if(b.classList.contains('mais')||b.classList.contains('menos')){
-      var v=b.closest('.voto');
-      var n=(+v.getAttribute('data-n')||0)+(b.classList.contains('mais')?1:-1);
-      v.setAttribute('data-n',Math.max(0,n)); pintaVotos(v.closest('.votos'));
-    }
-    else if(b.classList.contains('pt')){b.textContent=(+b.textContent+1); somaPlacar();}
     if(e.detail>0&&b.blur){b.blur();}
   });
 
@@ -654,12 +489,11 @@ tfoot td{font-weight:700;border-bottom:0}
     if(k==='Escape'){fechaMapa(); return;}
     if(k==='m'||k==='M'){alternaMapa(); return;}
     if(!mapa.hidden){return;}
-    if(k==='ArrowRight'||k==='PageDown'){e.preventDefault(); prox();}
-    else if(k==='ArrowLeft'||k==='PageUp'){e.preventDefault(); ant();}
+    if(k==='ArrowRight'||k==='PageDown'||k==='ArrowDown'){e.preventDefault(); prox();}
+    else if(k==='ArrowLeft'||k==='PageUp'||k==='ArrowUp'){e.preventDefault(); ant();}
     else if((k===' '||k==='Enter')&&!emControle){e.preventDefault(); prox();}
     else if(k==='Home'){mostra(0);}
     else if(k==='End'){mostra(total-1);}
-    else if(k==='n'||k==='N'){alternaNotas();}
     else if(k==='f'||k==='F'){telaCheia();}
   });
 
@@ -673,9 +507,8 @@ tfoot td{font-weight:700;border-bottom:0}
 
   var inicio=doHash();
   if(inicio===null){
-    try{var g=localStorage.getItem('aula13-slide'); if(g!==null&&!isNaN(+g)){inicio=+g;}}catch(e){}
+    try{var g=localStorage.getItem('aula13v2-slide'); if(g!==null&&!isNaN(+g)){inicio=+g;}}catch(e){}
   }
-  pintaTempo();
   mostra(inicio===null?0:inicio);
 })();
 </script>

@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Crítica à ponderação (Aula 12)</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: um slide por vez, pouco texto e letra grande para projeção; fotos à direita; visual único e claro */
+:root{
+  --bg:#f5f7fb; --surface:#ffffff; --ink:#131c33; --muted:#5a6580; --line:#d8deea; --accent:#1f3fbf; --nao:#b3261e;
+  --display:"Palatino Linotype",Palatino,"Book Antiqua","Iowan Old Style",Georgia,serif;
+  --body:"Avenir Next","Segoe UI",Calibri,system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  color-scheme:light;
+}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body)}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+.deck{height:100%;display:grid;grid-template-rows:minmax(0,1fr) auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.palco{overflow:auto;display:flex;font-size:clamp(20px,2.3vw + 1.5vh,58px)}
+.slide{display:none;flex-direction:column;gap:.55em;margin:auto;width:100%;max-width:27em;padding-block:.4em}
+.slide.on{display:flex}
+.slide.foto.on{display:grid}
+.foto{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:1.2em;align-items:center}
+.txt{display:flex;flex-direction:column;gap:.55em;min-width:0}
+
+h1,h2{font-family:var(--display);margin:0;text-wrap:balance;font-weight:700;letter-spacing:-.01em}
+h1{font-size:2em;line-height:1.02}
+h2{font-size:1.45em;line-height:1.1}
+p{margin:0;line-height:1.3}
+b,strong{color:var(--accent)}
+.olho{font-size:.42em;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.grande{font-family:var(--display);font-size:1.5em;line-height:1.15;text-wrap:balance}
+.enorme{font-family:var(--display);font-size:2.3em;line-height:1.02;font-weight:700;color:var(--accent)}
+.suave{color:var(--muted)}
+blockquote{margin:0;font-family:var(--display);font-size:1.25em;line-height:1.25;padding-left:.7em;border-left:.1em solid var(--accent)}
+cite{display:block;font-family:var(--body);font-style:normal;font-size:.5em;color:var(--muted);margin-top:.7em}
+.cena{font-family:var(--display);font-size:1.3em;line-height:1.22}
+
+figure{margin:0;display:flex;flex-direction:column;gap:.25em;min-width:0}
+figure img{display:block;width:100%;max-width:100%;height:min(64vh,15em);object-fit:cover;border-radius:.15em;box-shadow:0 .3em 1em rgba(19,28,51,.18);background:var(--line)}
+figcaption{font-size:.3em;color:var(--muted);line-height:1.3}
+figcaption span{display:block;font-size:1.6em;font-weight:700;color:var(--ink)}
+.par{display:grid;grid-template-columns:1fr 1fr;gap:.5em}
+.par img{height:min(52vh,11em)}
+
+.linhas{display:flex;flex-direction:column;gap:.4em}
+.linha{display:flex;flex-wrap:wrap;align-items:baseline;gap:.15em .7em;font-family:var(--display);font-size:1.2em;line-height:1.2;padding-bottom:.35em;border-bottom:1px solid var(--line)}
+.num{color:var(--accent);font-weight:700;min-width:1.1em}
+.rot{font-family:var(--body);font-size:.5em;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.dupla{display:grid;grid-template-columns:repeat(auto-fit,minmax(9em,1fr));gap:1em}
+.dupla > div{border-top:.1em solid var(--accent);padding-top:.4em;display:flex;flex-direction:column;gap:.25em;min-width:0}
+.dupla strong{font-family:var(--display);font-size:1.2em;color:var(--ink)}
+.creditos{font-size:.28em;color:var(--muted);line-height:1.5}
+
+.step{visibility:hidden;opacity:0;transition:opacity .25s}
+.step.vis{visibility:visible;opacity:1}
+
+.rodape{display:flex;align-items:center;gap:.5rem;padding-block:.4rem;font-size:.75rem;color:var(--muted);position:relative}
+.prog{position:absolute;left:0;right:0;top:0;height:3px;background:var(--line)}
+.prog i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.rodape button{border:1px solid var(--line);background:var(--surface);border-radius:.35rem;padding:.25rem .6rem;color:var(--ink)}
+.rodape .nav{font-size:1rem;padding:.15rem .8rem}
+#cont{font-variant-numeric:tabular-nums;min-width:4.2em;text-align:center}
+.rodape .fim{margin-left:auto}
+
+.mapa{position:fixed;inset:0;z-index:20;background:var(--bg);overflow:auto;
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.mapa-in{max-width:46rem;margin:0 auto;display:flex;flex-direction:column;gap:.35rem}
+.mapa h2{font-size:1.6rem;margin-bottom:.4rem}
+.ir{display:grid;grid-template-columns:2.2em minmax(0,1fr);gap:.6em;align-items:baseline;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:.35rem;padding:.45rem .7rem;font-size:.95rem}
+.ir span:first-child{color:var(--muted);font-variant-numeric:tabular-nums}
+.ir.atual{border-color:var(--accent)}
+
+@media (max-width:700px){
+  .foto{grid-template-columns:minmax(0,1fr)}
+  figure img{height:min(38vh,13em)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.sub{flex-basis:100%;font-family:var(--body);font-size:.6em;color:var(--muted);line-height:1.3}
+.tab{display:flex;flex-direction:column;gap:.35em;font-family:var(--display);font-size:1.3em;line-height:1.2}
+.tr{display:grid;grid-template-columns:1.2fr 2fr;align-items:baseline;gap:.6em;padding-bottom:.3em;border-bottom:1px solid var(--line)}
+.resp{display:grid;grid-template-columns:1fr 1fr;gap:.6em}
+.cab .resp{font-family:var(--body);font-size:.5em;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.nao{color:var(--nao)}
+</style>
+
+<div class="deck" id="deck">
+  <main class="palco" id="palco">
+
+    <section class="slide foto on" data-t="Capa">
+      <div class="txt">
+        <span class="olho">Hermenêutica Jurídica · Aula 12</span>
+        <h1>Crítica à ponderação</h1>
+        <p class="grande">O caso Ellwanger</p>
+      </div>
+      <figure><img src="img/justica.jpg" alt="Escultura A Justiça, em frente ao Supremo Tribunal Federal"><figcaption>A Justiça, de Alfredo Ceschiatti. Foto: Filipo Tardim, CC BY-SA 4.0</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="Aula passada: justificar o peso">
+      <span class="olho">Aula passada</span>
+      <p class="enorme">Quem pondera tem de justificar o peso.</p>
+    </section>
+
+    <section class="slide" data-t="A pergunta de hoje">
+      <span class="olho">A pergunta de hoje</span>
+      <p class="grande">E se dois juízes usam o mesmo método e justificam cada passo?</p>
+      <p class="enorme step">Chegam ao mesmo resultado?</p>
+    </section>
+
+    <section class="slide foto" data-t="Parte 1: O STF pondera">
+      <div class="txt">
+        <span class="olho">Parte 1</span>
+        <h1>O STF pondera</h1>
+        <p class="grande">Proporcionalidade e ponderação no Supremo</p>
+      </div>
+      <figure><img src="img/stf.jpg" alt="Sede do Supremo Tribunal Federal, em Brasília"><figcaption><span>Supremo Tribunal Federal</span>Foto: Leandro Neumann Ciuffo, CC BY 2.0</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="334 acórdãos">
+      <span class="olho">Pesquisa de jurisprudência do STF · dezembro de 2017</span>
+      <p class="grande">Busca pela palavra “ponderação”:</p>
+      <p class="enorme step">334 acórdãos</p>
+    </section>
+
+    <section class="slide" data-t="Citação: juízo de ponderação">
+      <blockquote>“Em geral, o Tribunal faz um juízo de ponderação levando em conta várias variáveis [...].”<cite>Ministro do STF</cite></blockquote>
+    </section>
+
+    <section class="slide" data-t="Citação: a técnica predominante">
+      <blockquote>“[...] a técnica que o Direito predominantemente adota para a solução dessa tensão ou desse conflito é precisamente a denominada ponderação.”<cite>Ministro do STF</cite></blockquote>
+    </section>
+
+    <section class="slide" data-t="O que é a ponderação?">
+      <span class="olho">Relembrando</span>
+      <h1>O que é a ponderação?</h1>
+      <p class="grande step">O último passo do <b>princípio da proporcionalidade</b>.</p>
+    </section>
+
+    <section class="slide" data-t="Os três passos da proporcionalidade">
+      <h2>O princípio da proporcionalidade</h2>
+      <div class="linhas">
+        <div class="linha"><span class="num">1</span><span>Adequação</span><span class="sub step">O meio atinge o fim?</span></div>
+        <div class="linha"><span class="num">2</span><span>Necessidade</span><span class="sub step">Existe meio menos gravoso?</span></div>
+        <div class="linha"><span class="num">3</span><span>Proporcionalidade em sentido estrito</span><span class="sub step">O ganho compensa a perda?</span></div>
+      </div>
+    </section>
+
+    <section class="slide" data-t="A lei da ponderação">
+      <span class="olho">O terceiro passo é a ponderação</span>
+      <blockquote>“Quanto maior é o grau de não satisfação ou de prejuízo de um dos princípios, tanto maior deve ser a importância da satisfação do outro.”<cite>Alexy</cite></blockquote>
+    </section>
+
+    <section class="slide" data-t="Parte 2: O caso Ellwanger">
+      <span class="olho">Parte 2</span>
+      <h1>O caso Ellwanger</h1>
+      <p class="grande">HC 82.424/RS · STF, 2003</p>
+      <p class="suave">Liberdade de expressão e discurso de ódio</p>
+    </section>
+
+    <section class="slide foto" data-t="Quem foi Ellwanger">
+      <div class="txt">
+        <span class="olho">Siegfried Ellwanger Castan (1928-2010)</span>
+        <h2>Industrial, livreiro e escritor gaúcho.</h2>
+        <p class="grande step">Negava o <b>Holocausto</b>.</p>
+      </div>
+      <figure><img src="img/auschwitz.jpg" alt="Entrada do campo de Auschwitz-Birkenau, com os trilhos do trem"><figcaption><span>Auschwitz-Birkenau, Polônia</span>Foto: Ingo Mehling, CC BY-SA 4.0</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="Os livros">
+      <span class="olho">Editora Revisão, Porto Alegre</span>
+      <p class="cena">“Holocausto: judeu ou alemão? Nos bastidores da mentira do século”</p>
+      <p class="suave">Um dos livros que ele escreveu, editou e vendeu.</p>
+    </section>
+
+    <section class="slide" data-t="Para a turma: liberdade ou crime?">
+      <span class="olho">Para a turma</span>
+      <p class="grande">Publicar esses livros é...</p>
+      <p class="enorme">liberdade de expressão ou crime?</p>
+    </section>
+
+    <section class="slide foto" data-t="Os dois lados na Constituição">
+      <div class="txt">
+        <span class="olho">Os dois lados estão na Constituição</span>
+        <div class="linhas">
+          <div class="linha"><span>Liberdade de expressão</span><span class="sub">art. 5º, IV e IX</span></div>
+          <div class="linha"><span>Dignidade e igualdade</span><span class="sub">art. 1º, III, e art. 5º, caput</span></div>
+          <div class="linha step"><span>Racismo é crime imprescritível</span><span class="sub">art. 5º, XLII</span></div>
+        </div>
+      </div>
+      <figure><img src="img/constituicao.jpg" alt="Exemplar de bolso da Constituição de 1988"><figcaption><span>Constituição de 1988</span>Foto: Moacir Ximenes, domínio público</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="O caminho do processo">
+      <h2>O caminho do processo</h2>
+      <div class="linhas">
+        <div class="linha step"><span>1ª instância: <b>absolvido</b>.</span></div>
+        <div class="linha step"><span>Tribunal de Justiça do RS: <b>condenado por racismo</b>.</span></div>
+        <div class="linha step"><span>STF: a defesa pede <b>habeas corpus</b>.</span></div>
+      </div>
+    </section>
+
+    <section class="slide" data-t="A tese da defesa">
+      <span class="olho">A tese da defesa</span>
+      <p class="cena">Judeus não são uma raça. Sem raça, não há racismo. Sem racismo, o crime prescreveu.</p>
+      <p class="step"><b>STF:</b> racismo é conceito social, não biológico.</p>
+    </section>
+
+    <section class="slide" data-t="O STF decidiu">
+      <span class="olho">STF, 17 de setembro de 2003</span>
+      <p class="enorme">Condenação mantida.</p>
+      <p class="grande step">Habeas corpus negado por <b>8 a 3</b>.</p>
+    </section>
+
+    <section class="slide foto" data-t="Dois ministros, o mesmo método">
+      <div class="txt">
+        <span class="olho">O que interessa hoje</span>
+        <h2>Dois ministros, o mesmo método.</h2>
+        <p class="grande step"><b>Resultados opostos.</b></p>
+      </div>
+      <figure><img src="img/ministros.jpg" alt="Os ministros Marco Aurélio e Gilmar Mendes conversam no plenário do STF"><figcaption><span>Marco Aurélio e Gilmar Mendes</span>STF, 2008. Foto: Fabio Rodrigues Pozzebom/ABr, CC BY 3.0 BR</figcaption></figure>
+    </section>
+
+    <section class="slide foto" data-t="Voto 1: Gilmar Mendes">
+      <div class="txt">
+        <span class="olho">Voto 1</span>
+        <h1>Gilmar Mendes</h1>
+        <p class="grande">Aplica a proporcionalidade.</p>
+      </div>
+      <figure><img src="img/gilmar.jpg" alt="Retrato do ministro Gilmar Mendes"><figcaption><span>Gilmar Mendes</span>Foto: Senado Federal, CC BY 2.0</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="Gilmar Mendes: sem primazia">
+      <blockquote>“Não se pode atribuir primazia à liberdade de expressão, no contexto de uma sociedade pluralista, em face de valores outros como os da igualdade e da dignidade humana.”<cite>Ministro Gilmar Mendes</cite></blockquote>
+    </section>
+
+    <section class="slide" data-t="Gilmar Mendes: mantém a condenação">
+      <span class="olho">Gilmar Mendes</span>
+      <p class="grande">A condenação é <b>adequada, necessária e proporcional</b>.</p>
+      <p class="enorme step">Mantém a condenação.</p>
+    </section>
+
+    <section class="slide foto" data-t="Voto 2: Marco Aurélio">
+      <div class="txt">
+        <span class="olho">Voto 2</span>
+        <h1>Marco Aurélio</h1>
+        <p class="grande">Aplica a proporcionalidade.</p>
+      </div>
+      <figure><img src="img/marco.jpg" alt="Retrato do ministro Marco Aurélio"><figcaption><span>Marco Aurélio Mello</span>Foto: Anderson Riedel, CC BY 2.0</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="Marco Aurélio: é razoável restringir?">
+      <blockquote>“Cumpre perquirir se é razoável [...] restringir-se determinada manifestação de opinião por meio de um livro, ainda que preconceituosa e despropositada [...].”<cite>Ministro Marco Aurélio</cite></blockquote>
+    </section>
+
+    <section class="slide" data-t="Marco Aurélio: sem indícios">
+      <span class="olho">Marco Aurélio</span>
+      <p class="grande">Para ele, não há “mínimos indícios” de que o livro causaria violência no Brasil.</p>
+    </section>
+
+    <section class="slide" data-t="Marco Aurélio: concede a ordem">
+      <span class="olho">Marco Aurélio</span>
+      <p class="grande">A condenação <b>não</b> é adequada, nem necessária, nem proporcional.</p>
+      <p class="enorme step">Concede a ordem.</p>
+    </section>
+
+    <section class="slide" data-t="Lado a lado: o mesmo teste">
+      <span class="olho">A condenação passa no teste?</span>
+      <div class="tab">
+        <div class="tr cab"><span></span><span class="resp"><span>Gilmar Mendes</span><span>Marco Aurélio</span></span></div>
+        <div class="tr"><span>Adequada?</span><span class="resp step"><b>Sim</b><b class="nao">Não</b></span></div>
+        <div class="tr"><span>Necessária?</span><span class="resp step"><b>Sim</b><b class="nao">Não</b></span></div>
+        <div class="tr"><span>Proporcional?</span><span class="resp step"><b>Sim</b><b class="nao">Não</b></span></div>
+        <div class="tr"><span>Resultado</span><span class="resp step"><b>Mantém</b><b class="nao">Concede</b></span></div>
+      </div>
+    </section>
+
+    <section class="slide" data-t="Parte 3: A crítica">
+      <span class="olho">Parte 3 · A crítica</span>
+      <p class="enorme">O mesmo método. Resultados opostos.</p>
+      <p class="grande step">Então o método serve para quê?</p>
+    </section>
+
+    <section class="slide" data-t="Onde eles discordam?">
+      <h2>Onde eles discordam?</h2>
+      <div class="linhas">
+        <div class="linha step"><span>No peso da liberdade de expressão.</span></div>
+        <div class="linha step"><span>No peso da dignidade.</span></div>
+        <div class="linha step"><span>No risco real do livro.</span></div>
+      </div>
+      <p class="step"><b>A proporcionalidade não responde a nenhuma das três.</b></p>
+    </section>
+
+    <section class="slide" data-t="A discricionariedade muda de lugar">
+      <span class="olho">A crítica</span>
+      <p class="grande">A discricionariedade não some.</p>
+      <p class="enorme step">Ela se muda para o peso.</p>
+    </section>
+
+    <section class="slide foto" data-t="Habermas: direitos não são valores">
+      <div class="txt">
+        <span class="olho">Crítica 1 · Habermas</span>
+        <h2>Direitos não são valores.</h2>
+        <p class="step">Se tudo se pondera, nenhum direito está garantido.</p>
+      </div>
+      <figure><img src="img/habermas.jpg" alt="Retrato de Jürgen Habermas"><figcaption><span>Jürgen Habermas</span>Foto: Wolfram Huke, CC BY-SA 3.0</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="Habermas: faltam critérios racionais">
+      <span class="olho">Habermas, em Direito e democracia</span>
+      <p class="grande">Para pesar valores, faltam <b>critérios racionais</b>.</p>
+      <p class="step">O risco: decidir de modo arbitrário ou irrefletido.</p>
+    </section>
+
+    <section class="slide foto" data-t="Streck: a volta do poder discricionário">
+      <div class="txt">
+        <span class="olho">Crítica 2 · Lenio Streck</span>
+        <h2>A ponderação traz de volta o poder discricionário.</h2>
+        <p class="step suave">É o tema do Seminário 12.</p>
+      </div>
+      <figure><img src="img/streck.jpg" alt="Lenio Streck em uma palestra"><figcaption><span>Lenio Streck</span>Foto: DASEIN, Núcleo de Estudos Hermenêuticos, domínio público</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="Lembra do positivismo?">
+      <span class="olho">Lembra?</span>
+      <p class="grande">O pós-positivismo nasceu para combater o <b>poder discricionário</b> do juiz.</p>
+      <p class="enorme step">A ponderação combate ou disfarça?</p>
+    </section>
+
+    <section class="slide foto" data-t="A resposta de Alexy">
+      <div class="txt">
+        <span class="olho">A resposta de Alexy</span>
+        <h2>A ponderação não promete uma única resposta.</h2>
+        <p class="step">Promete uma decisão que se pode <b>conferir e criticar</b>.</p>
+      </div>
+      <figure><img src="img/alexy.jpg" alt="Retrato de Robert Alexy"><figcaption><span>Robert Alexy</span>Foto: Contrib32523, CC BY-SA 4.0</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="O ganho: mostrar onde discorda">
+      <span class="olho">O ganho, segundo Alexy</span>
+      <p class="grande">Cada ministro teve de mostrar <b>onde</b> discorda do outro.</p>
+      <p class="step">Sem os três passos, haveria só o resultado.</p>
+    </section>
+
+    <section class="slide" data-t="Para discutir">
+      <span class="olho">Para discutir</span>
+      <p class="grande">O uso do princípio da proporcionalidade é adequado para combater o <b>poder discricionário</b> do julgador?</p>
+    </section>
+
+    <section class="slide" data-t="Sim ou não?">
+      <span class="olho">Dois caminhos para a resposta</span>
+      <div class="dupla">
+        <div><strong>Sim</strong><span class="step">Obriga o juiz a justificar cada passo.</span></div>
+        <div><strong>Não</strong><span class="step">O peso continua sendo escolha de quem julga.</span></div>
+      </div>
+    </section>
+
+    <section class="slide" data-t="Para levar">
+      <h2>Para levar</h2>
+      <div class="linhas">
+        <div class="linha"><span>O STF pondera, e muito.</span></div>
+        <div class="linha"><span>No caso Ellwanger, o mesmo teste deu resultados opostos.</span></div>
+        <div class="linha"><span>A crítica: o peso depende de quem pesa.</span></div>
+      </div>
+    </section>
+
+    <section class="slide" data-t="Fim">
+      <span class="olho">A seguir</span>
+      <h1>Seminário 12</h1>
+      <p class="grande">Streck: por que a discricionariedade é um problema para Dworkin e não para Alexy</p>
+      <p class="suave">Vitor Medrado</p>
+      <p class="creditos">Imagens do Wikimedia Commons: A Justiça (Filipo Tardim, CC BY-SA 4.0); Supremo Tribunal Federal (Leandro Neumann Ciuffo, CC BY 2.0); Auschwitz-Birkenau (Ingo Mehling, CC BY-SA 4.0); Constituição de 1988 (Moacir Ximenes, domínio público); Marco Aurélio e Gilmar Mendes (Fabio Rodrigues Pozzebom/ABr, CC BY 3.0 BR); Gilmar Mendes (Senado Federal, CC BY 2.0); Marco Aurélio (Anderson Riedel, CC BY 2.0); Jürgen Habermas (Wolfram Huke, CC BY-SA 3.0); Lenio Streck (DASEIN, domínio público); Robert Alexy (Contrib32523, CC BY-SA 4.0). Fotos recortadas.</p>
+    </section>
+
+  </main>
+
+  <div class="rodape">
+    <div class="prog"><i id="prog"></i></div>
+    <button type="button" class="nav" id="ant" aria-label="Voltar">‹</button>
+    <span id="cont">1 / 40</span>
+    <button type="button" class="nav" id="prox" aria-label="Avançar">›</button>
+    <button type="button" id="b-mapa" class="fim">Mapa</button>
+    <button type="button" id="b-cheia">Tela cheia</button>
+  </div>
+</div>
+
+<div class="mapa" id="mapa" hidden>
+  <div class="mapa-in">
+    <h2>Mapa da aula</h2>
+    <div id="lista" class="mapa-in"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var total=slides.length, i=0;
+  var palco=document.getElementById('palco');
+  var cont=document.getElementById('cont'), prog=document.getElementById('prog');
+  var mapa=document.getElementById('mapa'), lista=document.getElementById('lista');
+
+  function passos(s){return [].slice.call(s.querySelectorAll('.step'));}
+  function salva(){
+    try{localStorage.setItem('aula12-slide',String(i));}catch(e){}
+    try{history.replaceState(null,'','#s'+(i+1));}catch(e){}
+  }
+  function mostra(n){
+    i=Math.max(0,Math.min(total-1,n));
+    slides.forEach(function(s,k){s.classList.toggle('on',k===i);});
+    cont.textContent=(i+1)+' / '+total;
+    prog.style.width=((i+1)/total*100)+'%';
+    palco.scrollTop=0;
+    [].forEach.call(lista.children,function(b,k){b.classList.toggle('atual',k===i);});
+    salva();
+  }
+  function prox(){
+    var p=passos(slides[i]).filter(function(e){return !e.classList.contains('vis');})[0];
+    if(p){p.classList.add('vis'); if(p.scrollIntoView){p.scrollIntoView({block:'nearest'});} return;}
+    if(i<total-1){mostra(i+1);}
+  }
+  function ant(){
+    var v=passos(slides[i]).filter(function(e){return e.classList.contains('vis');});
+    if(v.length){v[v.length-1].classList.remove('vis'); return;}
+    if(i>0){mostra(i-1);}
+  }
+
+  slides.forEach(function(s,k){
+    var b=document.createElement('button'); b.type='button'; b.className='ir'; b.setAttribute('data-k',k);
+    var n=document.createElement('span'); n.textContent=(k+1);
+    var t=document.createElement('span'); t.textContent=s.getAttribute('data-t')||'';
+    b.appendChild(n); b.appendChild(t); lista.appendChild(b);
+  });
+  function fechaMapa(){mapa.hidden=true;}
+  function alternaMapa(){mapa.hidden=!mapa.hidden;}
+  function telaCheia(){
+    try{
+      var el=document.documentElement;
+      if(document.fullscreenElement){document.exitFullscreen();}
+      else if(el.requestFullscreen){var r=el.requestFullscreen(); if(r&&r.catch){r.catch(function(){});}}
+    }catch(e){}
+  }
+
+  document.addEventListener('click',function(e){
+    var b=e.target.closest?e.target.closest('button'):null;
+    if(!b){return;}
+    if(b.id==='prox'){prox();}
+    else if(b.id==='ant'){ant();}
+    else if(b.id==='b-mapa'){alternaMapa();}
+    else if(b.id==='b-cheia'){telaCheia();}
+    else if(b.classList.contains('ir')){mostra(+b.getAttribute('data-k')); fechaMapa();}
+    if(e.detail>0&&b.blur){b.blur();}
+  });
+
+  document.addEventListener('keydown',function(e){
+    if(e.metaKey||e.ctrlKey||e.altKey){return;}
+    var k=e.key;
+    var emControle=e.target&&e.target.closest&&e.target.closest('button,a,input,select,textarea');
+    if(k==='Escape'){fechaMapa(); return;}
+    if(k==='m'||k==='M'){alternaMapa(); return;}
+    if(!mapa.hidden){return;}
+    if(k==='ArrowRight'||k==='PageDown'||k==='ArrowDown'){e.preventDefault(); prox();}
+    else if(k==='ArrowLeft'||k==='PageUp'||k==='ArrowUp'){e.preventDefault(); ant();}
+    else if((k===' '||k==='Enter')&&!emControle){e.preventDefault(); prox();}
+    else if(k==='Home'){mostra(0);}
+    else if(k==='End'){mostra(total-1);}
+    else if(k==='f'||k==='F'){telaCheia();}
+  });
+
+  function doHash(){
+    var m=/^#s(\d+)$/.exec(location.hash||'');
+    return m?(+m[1]-1):null;
+  }
+  window.addEventListener('hashchange',function(){
+    var h=doHash(); if(h!==null&&h!==i){mostra(h);}
+  });
+
+  var inicio=doHash();
+  if(inicio===null){
+    try{var g=localStorage.getItem('aula12-slide'); if(g!==null&&!isNaN(+g)){inicio=+g;}}catch(e){}
+  }
+  mostra(inicio===null?0:inicio);
+})();
+</script>

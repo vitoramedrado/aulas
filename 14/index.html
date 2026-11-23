@@ -1,0 +1,484 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Métodos e tipos de interpretação (Aula 14)</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+/* Layout: um slide por vez, pouco texto e letra grande para projeção; fotos à direita; visual único e claro */
+:root{
+  --bg:#f5f7fb; --surface:#ffffff; --ink:#131c33; --muted:#5a6580; --line:#d8deea; --accent:#1f3fbf; --nao:#b3261e;
+  --display:"Palatino Linotype",Palatino,"Book Antiqua","Iowan Old Style",Georgia,serif;
+  --body:"Avenir Next","Segoe UI",Calibri,system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  color-scheme:light;
+}
+html,body{height:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body)}
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+.deck{height:100%;display:grid;grid-template-rows:minmax(0,1fr) auto;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.palco{overflow:auto;display:flex;font-size:clamp(20px,2.3vw + 1.5vh,58px)}
+.slide{display:none;flex-direction:column;gap:.55em;margin:auto;width:100%;max-width:27em;padding-block:.4em}
+.slide.on{display:flex}
+.slide.foto.on{display:grid}
+.foto{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:1.2em;align-items:center}
+.txt{display:flex;flex-direction:column;gap:.55em;min-width:0}
+
+h1,h2{font-family:var(--display);margin:0;text-wrap:balance;font-weight:700;letter-spacing:-.01em}
+h1{font-size:2em;line-height:1.02}
+h2{font-size:1.45em;line-height:1.1}
+p{margin:0;line-height:1.3}
+b,strong{color:var(--accent)}
+.olho{font-size:.42em;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+.grande{font-family:var(--display);font-size:1.5em;line-height:1.15;text-wrap:balance}
+.enorme{font-family:var(--display);font-size:2.3em;line-height:1.02;font-weight:700;color:var(--accent)}
+.suave{color:var(--muted)}
+blockquote{margin:0;font-family:var(--display);font-size:1.25em;line-height:1.25;padding-left:.7em;border-left:.1em solid var(--accent)}
+cite{display:block;font-family:var(--body);font-style:normal;font-size:.5em;color:var(--muted);margin-top:.7em}
+.cena{font-family:var(--display);font-size:1.3em;line-height:1.22}
+
+figure{margin:0;display:flex;flex-direction:column;gap:.25em;min-width:0}
+figure img{display:block;width:100%;max-width:100%;height:min(64vh,15em);object-fit:cover;border-radius:.15em;box-shadow:0 .3em 1em rgba(19,28,51,.18);background:var(--line)}
+figcaption{font-size:.3em;color:var(--muted);line-height:1.3}
+figcaption span{display:block;font-size:1.6em;font-weight:700;color:var(--ink)}
+.par{display:grid;grid-template-columns:1fr 1fr;gap:.5em}
+.par img{height:min(52vh,11em)}
+
+.linhas{display:flex;flex-direction:column;gap:.4em}
+.linha{display:flex;flex-wrap:wrap;align-items:baseline;gap:.15em .7em;font-family:var(--display);font-size:1.2em;line-height:1.2;padding-bottom:.35em;border-bottom:1px solid var(--line)}
+.num{color:var(--accent);font-weight:700;min-width:1.1em}
+.rot{font-family:var(--body);font-size:.5em;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.dupla{display:grid;grid-template-columns:repeat(auto-fit,minmax(9em,1fr));gap:1em}
+.dupla > div{border-top:.1em solid var(--accent);padding-top:.4em;display:flex;flex-direction:column;gap:.25em;min-width:0}
+.dupla strong{font-family:var(--display);font-size:1.2em;color:var(--ink)}
+.creditos{font-size:.28em;color:var(--muted);line-height:1.5}
+
+.step{visibility:hidden;opacity:0;transition:opacity .25s}
+.step.vis{visibility:visible;opacity:1}
+
+.rodape{display:flex;align-items:center;gap:.5rem;padding-block:.4rem;font-size:.75rem;color:var(--muted);position:relative}
+.prog{position:absolute;left:0;right:0;top:0;height:3px;background:var(--line)}
+.prog i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+.rodape button{border:1px solid var(--line);background:var(--surface);border-radius:.35rem;padding:.25rem .6rem;color:var(--ink)}
+.rodape .nav{font-size:1rem;padding:.15rem .8rem}
+#cont{font-variant-numeric:tabular-nums;min-width:4.2em;text-align:center}
+.rodape .fim{margin-left:auto}
+
+.mapa{position:fixed;inset:0;z-index:20;background:var(--bg);overflow:auto;
+  padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.mapa-in{max-width:46rem;margin:0 auto;display:flex;flex-direction:column;gap:.35rem}
+.mapa h2{font-size:1.6rem;margin-bottom:.4rem}
+.ir{display:grid;grid-template-columns:2.2em minmax(0,1fr);gap:.6em;align-items:baseline;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:.35rem;padding:.45rem .7rem;font-size:.95rem}
+.ir span:first-child{color:var(--muted);font-variant-numeric:tabular-nums}
+.ir.atual{border-color:var(--accent)}
+
+@media (max-width:700px){
+  .foto{grid-template-columns:minmax(0,1fr)}
+  figure img{height:min(38vh,13em)}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.sub{flex-basis:100%;font-family:var(--body);font-size:.6em;color:var(--muted);line-height:1.3}
+.tab{display:flex;flex-direction:column;gap:.35em;font-family:var(--display);font-size:1.3em;line-height:1.2}
+.tr{display:grid;grid-template-columns:1.2fr 2fr;align-items:baseline;gap:.6em;padding-bottom:.3em;border-bottom:1px solid var(--line)}
+.resp{display:grid;grid-template-columns:1fr 1fr;gap:.6em}
+.cab .resp{font-family:var(--body);font-size:.5em;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.nao{color:var(--nao)}
+.ampla{grid-template-columns:minmax(0,1fr) minmax(0,1.5fr)}
+.slide figure img{object-position:50% 15%}
+</style>
+
+<div class="deck" id="deck">
+  <main class="palco" id="palco">
+
+    <section class="slide foto on" data-t="Capa">
+      <div class="txt">
+        <span class="olho">Hermenêutica Jurídica · Aula 14</span>
+        <h1>Métodos e tipos de interpretação</h1>
+        <p class="grande">Uma abordagem crítica</p>
+      </div>
+      <figure><img src="img/platao.jpg" alt="Platão e Aristóteles, detalhe de A Escola de Atenas, de Rafael"><figcaption>Detalhe de A Escola de Atenas, de Rafael. Domínio público</figcaption></figure>
+    </section>
+
+    <section class="slide foto ampla" data-t="O que você vê?">
+      <div class="txt">
+        <span class="olho">Rafael, A Escola de Atenas (1509-1511)</span>
+        <p class="enorme">O que você vê?</p>
+      </div>
+      <figure><img src="img/atenas.jpg" alt="Afresco A Escola de Atenas, de Rafael, com dezenas de filósofos sob uma arcada"><figcaption>Museus do Vaticano. Domínio público</figcaption></figure>
+    </section>
+
+    <section class="slide foto" data-t="Platão e Aristóteles">
+      <div class="txt">
+        <span class="olho">No centro do quadro</span>
+        <p class="grande">Platão aponta para <b>cima</b>.</p>
+        <p class="grande step">Aristóteles estende a mão para o <b>chão</b>.</p>
+      </div>
+      <figure><img src="img/platao.jpg" alt="Platão aponta para o alto e Aristóteles estende a mão para a frente"><figcaption><span>Platão e Aristóteles</span>Detalhe de A Escola de Atenas. Domínio público</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="Nós interpretamos">
+      <p class="grande">Ninguém escreveu isso no quadro.</p>
+      <p class="enorme step">Nós interpretamos.</p>
+      <p class="step">Com a lei é igual: o sentido não vem pronto.</p>
+    </section>
+
+    <section class="slide foto" data-t="Parte 1: As Marchas da Maconha">
+      <div class="txt">
+        <span class="olho">Parte 1 · O caso</span>
+        <h1>As Marchas da Maconha</h1>
+        <p class="grande">ADPF 187 · STF, 2011</p>
+      </div>
+      <figure><img src="img/marcha.jpg" alt="Manifestantes com faixa e folha de maconha de papel em uma Marcha da Maconha"><figcaption><span>Marcha da Maconha, Rio de Janeiro, 2014</span>Foto: Tomaz Silva/Agência Brasil, CC BY 3.0</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="As marchas e as proibições">
+      <p class="grande">Passeatas pediam a <b>legalização</b> da maconha.</p>
+      <p class="grande step">Em várias cidades, juízes <b>proibiram</b> as marchas.</p>
+    </section>
+
+    <section class="slide" data-t="Código Penal, art. 287">
+      <span class="olho">O motivo da proibição</span>
+      <blockquote>“Fazer, publicamente, apologia de fato criminoso ou de autor de crime.”<cite>Código Penal, art. 287. Pena: detenção, de três a seis meses, ou multa.</cite></blockquote>
+    </section>
+
+    <section class="slide" data-t="Para a turma: apologia de crime?">
+      <span class="olho">Para a turma</span>
+      <p class="grande">Marchar pela legalização é...</p>
+      <p class="enorme">apologia de crime?</p>
+      <p class="step suave">Vamos testar a pergunta com os métodos de interpretação.</p>
+    </section>
+
+    <section class="slide foto" data-t="Parte 2: Savigny">
+      <div class="txt">
+        <span class="olho">Parte 2 · Métodos de interpretação</span>
+        <h1>Savigny</h1>
+        <p class="grande">O cânon de elementos</p>
+      </div>
+      <figure><img src="img/savigny.jpg" alt="Desenho de Savigny de perfil, com cartola"><figcaption><span>Friedrich Carl von Savigny (1779-1861)</span>Desenho de Franz Krüger, 1837. Domínio público</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="Os quatro elementos de Savigny">
+      <h2>Os quatro elementos de Savigny</h2>
+      <div class="linhas">
+        <div class="linha"><span class="num">1</span><span>Gramatical</span></div>
+        <div class="linha"><span class="num">2</span><span>Lógico</span></div>
+        <div class="linha"><span class="num">3</span><span>Sistemático</span></div>
+        <div class="linha"><span class="num">4</span><span>Histórico</span></div>
+      </div>
+    </section>
+
+    <section class="slide" data-t="1. Gramatical">
+      <span class="olho">1 · Elemento gramatical</span>
+      <p class="enorme">O que as palavras dizem?</p>
+      <p class="step"><b>No caso:</b> o que é “apologia”? Elogiar o crime ou pedir a mudança da lei?</p>
+    </section>
+
+    <section class="slide" data-t="2. Lógico">
+      <span class="olho">2 · Elemento lógico</span>
+      <p class="enorme">Como as partes da norma se ligam?</p>
+      <p class="step"><b>No caso:</b> quem pede que algo deixe de ser crime está elogiando o crime?</p>
+    </section>
+
+    <section class="slide" data-t="3. Sistemático">
+      <span class="olho">3 · Elemento sistemático</span>
+      <p class="enorme">Como a norma se encaixa no conjunto?</p>
+      <p class="step"><b>No caso:</b> a Constituição garante liberdade de expressão e de reunião (art. 5º, IV e XVI).</p>
+    </section>
+
+    <section class="slide" data-t="4. Histórico">
+      <span class="olho">4 · Elemento histórico</span>
+      <p class="enorme">De onde veio a norma?</p>
+      <p class="step"><b>No caso:</b> o Código Penal é de 1940, do Estado Novo.</p>
+    </section>
+
+    <section class="slide foto" data-t="Ihering e o elemento teleológico">
+      <div class="txt">
+        <span class="olho">Um quinto elemento</span>
+        <h1>Ihering</h1>
+        <p class="grande">O elemento teleológico</p>
+      </div>
+      <figure><img src="img/ihering.jpg" alt="Retrato de Rudolf von Ihering"><figcaption><span>Rudolf von Ihering (1818-1892)</span>Domínio público</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="5. Teleológico">
+      <span class="olho">5 · Elemento teleológico</span>
+      <p class="enorme">Para que serve a norma?</p>
+      <p class="step"><b>No caso:</b> o art. 287 protege a paz pública. Uma passeata pacífica a ameaça?</p>
+    </section>
+
+    <section class="slide" data-t="Cinco perguntas ao texto">
+      <h2>Cinco perguntas ao texto</h2>
+      <div class="linhas">
+        <div class="linha"><span>Gramatical</span><span class="rot">As palavras</span></div>
+        <div class="linha"><span>Lógico</span><span class="rot">A coerência</span></div>
+        <div class="linha"><span>Sistemático</span><span class="rot">O conjunto</span></div>
+        <div class="linha"><span>Histórico</span><span class="rot">A origem</span></div>
+        <div class="linha"><span>Teleológico</span><span class="rot">A finalidade</span></div>
+      </div>
+    </section>
+
+    <section class="slide" data-t="E se os métodos divergirem?">
+      <p class="grande">E se os métodos apontarem para lados diferentes?</p>
+      <p class="enorme step">Qual deles vale?</p>
+    </section>
+
+    <section class="slide foto" data-t="Parte 3: Tipos de interpretação">
+      <div class="txt">
+        <span class="olho">Parte 3 · Tipos de interpretação</span>
+        <h2>Na porta de uma biblioteca:</h2>
+        <p class="cena">“Entrada permitida apenas para advogados”</p>
+      </div>
+      <figure><img src="img/biblioteca.jpg" alt="Estantes de uma biblioteca jurídica"><figcaption>Biblioteca jurídica. Foto: Jrcla2, domínio público</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="Interpretação declarativa">
+      <span class="olho">Interpretação declarativa</span>
+      <p class="grande">Advogados são os <b>inscritos na OAB</b>.</p>
+      <p class="step">O texto disse exatamente o que queria.</p>
+    </section>
+
+    <section class="slide" data-t="Interpretação extensiva">
+      <span class="olho">Interpretação extensiva</span>
+      <p class="grande">Advogados são <b>todos os operadores do direito</b>.</p>
+      <p class="step">O texto disse menos do que queria.</p>
+    </section>
+
+    <section class="slide" data-t="Interpretação restritiva">
+      <span class="olho">Interpretação restritiva</span>
+      <p class="grande">Advogados são apenas os inscritos e <b>quites com a OAB</b>.</p>
+      <p class="step">O texto disse mais do que queria.</p>
+    </section>
+
+    <section class="slide" data-t="Para a turma: e o estudante?">
+      <span class="olho">Para a turma</span>
+      <p class="enorme">E o estudante de Direito, entra?</p>
+      <p class="grande step">Depende de quem interpreta a placa.</p>
+    </section>
+
+    <section class="slide" data-t="Parte 4: Abordagens críticas">
+      <span class="olho">Parte 4</span>
+      <h1>Abordagens críticas</h1>
+      <p class="grande">à metodologia clássica</p>
+    </section>
+
+    <section class="slide" data-t="Quem escolhe?">
+      <p class="grande">Cinco métodos. Três tipos de resultado.</p>
+      <p class="enorme step">Quem escolhe?</p>
+    </section>
+
+    <section class="slide" data-t="Warat: os métodos são retórica">
+      <span class="olho">Crítica 1 · Luis Alberto Warat</span>
+      <h2>Os métodos são retórica.</h2>
+      <p class="step">Dão aparência técnica a uma escolha.</p>
+    </section>
+
+    <section class="slide" data-t="Brum: a suposta neutralidade">
+      <span class="olho">Crítica 2 · Nilo Bairros de Brum</span>
+      <h2>A neutralidade do jurista é suposta.</h2>
+      <p class="step">Primeiro vem a decisão. Depois, o método que a justifica.</p>
+    </section>
+
+    <section class="slide foto" data-t="Eros Grau: não há hierarquia">
+      <div class="txt">
+        <span class="olho">Crítica 3 · Eros Grau</span>
+        <h2>Não há hierarquia entre os métodos.</h2>
+        <p class="step">Nenhuma regra diz qual deles usar primeiro.</p>
+      </div>
+      <figure><img src="img/eros.jpg" alt="Eros Grau de toga, no Supremo Tribunal Federal"><figcaption><span>Eros Grau</span>Foto: Fábio Rodrigues Pozzebom/ABr, CC BY 3.0 BR</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="Os métodos não decidem">
+      <span class="olho">O que as três críticas dizem</span>
+      <p class="enorme">Os métodos não decidem.</p>
+      <p class="grande step">Eles <b>justificam</b> o que já foi decidido.</p>
+    </section>
+
+    <section class="slide" data-t="Lembra? O poder discricionário">
+      <span class="olho">Lembra?</span>
+      <p class="grande">É o problema do <b>poder discricionário</b>, que acompanha o curso desde Kelsen.</p>
+    </section>
+
+    <section class="slide foto" data-t="Parte 5: Interpretação conforme a Constituição">
+      <div class="txt">
+        <span class="olho">Parte 5 · Novos métodos</span>
+        <h2>Interpretação conforme a Constituição</h2>
+      </div>
+      <figure><img src="img/constituicao.jpg" alt="Exemplar de bolso da Constituição de 1988"><figcaption><span>Constituição de 1988</span>Foto: Moacir Ximenes, domínio público</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="Vale o sentido que cabe na Constituição">
+      <p class="grande">A lei admite mais de um sentido?</p>
+      <p class="enorme step">Vale o que cabe na Constituição.</p>
+    </section>
+
+    <section class="slide" data-t="O texto fica, cai o sentido">
+      <p class="grande">O texto da lei <b>continua valendo</b>.</p>
+      <p class="grande step">Cai só o sentido inconstitucional.</p>
+    </section>
+
+    <section class="slide foto" data-t="De volta ao caso: o pedido da PGR">
+      <div class="txt">
+        <span class="olho">De volta ao caso · ADPF 187</span>
+        <h2>A PGR pediu ao STF:</h2>
+        <p>interpretação conforme a Constituição do <b>art. 287 do Código Penal</b>.</p>
+      </div>
+      <figure><img src="img/stf.jpg" alt="Sede do Supremo Tribunal Federal, em Brasília"><figcaption><span>Supremo Tribunal Federal</span>Foto: Leandro Neumann Ciuffo, CC BY 2.0</figcaption></figure>
+    </section>
+
+    <section class="slide foto" data-t="O STF decidiu">
+      <div class="txt">
+        <span class="olho">STF, 15 de junho de 2011 · por unanimidade</span>
+        <h2>Defender a legalização não é apologia de crime.</h2>
+      </div>
+      <figure><img src="img/celso.jpg" alt="Retrato do ministro Celso de Mello"><figcaption><span>Celso de Mello, relator</span>Foto: José Cruz/ABr, CC BY 3.0 BR</figcaption></figure>
+    </section>
+
+    <section class="slide" data-t="O fundamento">
+      <h2>O fundamento</h2>
+      <div class="linhas">
+        <div class="linha"><span>Liberdade de expressão</span><span class="sub">Constituição, art. 5º, IV</span></div>
+        <div class="linha"><span>Liberdade de reunião</span><span class="sub">Constituição, art. 5º, XVI</span></div>
+      </div>
+    </section>
+
+    <section class="slide" data-t="O art. 287 continua no Código">
+      <p class="grande">O art. 287 <b>continua</b> no Código Penal.</p>
+      <p class="grande step">Só não alcança quem pede a mudança da lei.</p>
+    </section>
+
+    <section class="slide" data-t="Para discutir">
+      <span class="olho">Para discutir</span>
+      <p class="grande">Dos cinco métodos, qual pesou mais na decisão do STF?</p>
+      <p class="enorme step">E quem escolheu esse método?</p>
+    </section>
+
+    <section class="slide" data-t="Para levar">
+      <h2>Para levar</h2>
+      <div class="linhas">
+        <div class="linha"><span>Métodos: cinco perguntas ao texto.</span></div>
+        <div class="linha"><span>Tipos: declarativa, extensiva e restritiva.</span></div>
+        <div class="linha"><span>Crítica: o método não decide, justifica.</span></div>
+      </div>
+    </section>
+
+    <section class="slide" data-t="Fim">
+      <h1>Fim</h1>
+      <p class="suave">Vitor Medrado</p>
+      <p class="creditos">Imagens do Wikimedia Commons: A Escola de Atenas, de Rafael (domínio público); Marcha da Maconha, Rio de Janeiro, 2014 (Tomaz Silva/Agência Brasil, CC BY 3.0); Savigny, desenho de Franz Krüger (domínio público); Rudolf von Ihering (domínio público); biblioteca jurídica (Jrcla2, domínio público); Eros Grau (Fábio Rodrigues Pozzebom/ABr, CC BY 3.0 BR); Constituição de 1988 (Moacir Ximenes, domínio público); Supremo Tribunal Federal (Leandro Neumann Ciuffo, CC BY 2.0); Celso de Mello (José Cruz/ABr, CC BY 3.0 BR). Fotos recortadas.</p>
+    </section>
+
+  </main>
+
+  <div class="rodape">
+    <div class="prog"><i id="prog"></i></div>
+    <button type="button" class="nav" id="ant" aria-label="Voltar">‹</button>
+    <span id="cont">1 / 40</span>
+    <button type="button" class="nav" id="prox" aria-label="Avançar">›</button>
+    <button type="button" id="b-mapa" class="fim">Mapa</button>
+    <button type="button" id="b-cheia">Tela cheia</button>
+  </div>
+</div>
+
+<div class="mapa" id="mapa" hidden>
+  <div class="mapa-in">
+    <h2>Mapa da aula</h2>
+    <div id="lista" class="mapa-in"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  var slides=[].slice.call(document.querySelectorAll('.slide'));
+  var total=slides.length, i=0;
+  var palco=document.getElementById('palco');
+  var cont=document.getElementById('cont'), prog=document.getElementById('prog');
+  var mapa=document.getElementById('mapa'), lista=document.getElementById('lista');
+
+  function passos(s){return [].slice.call(s.querySelectorAll('.step'));}
+  function salva(){
+    try{localStorage.setItem('aula14-slide',String(i));}catch(e){}
+    try{history.replaceState(null,'','#s'+(i+1));}catch(e){}
+  }
+  function mostra(n){
+    i=Math.max(0,Math.min(total-1,n));
+    slides.forEach(function(s,k){s.classList.toggle('on',k===i);});
+    cont.textContent=(i+1)+' / '+total;
+    prog.style.width=((i+1)/total*100)+'%';
+    palco.scrollTop=0;
+    [].forEach.call(lista.children,function(b,k){b.classList.toggle('atual',k===i);});
+    salva();
+  }
+  function prox(){
+    var p=passos(slides[i]).filter(function(e){return !e.classList.contains('vis');})[0];
+    if(p){p.classList.add('vis'); if(p.scrollIntoView){p.scrollIntoView({block:'nearest'});} return;}
+    if(i<total-1){mostra(i+1);}
+  }
+  function ant(){
+    var v=passos(slides[i]).filter(function(e){return e.classList.contains('vis');});
+    if(v.length){v[v.length-1].classList.remove('vis'); return;}
+    if(i>0){mostra(i-1);}
+  }
+
+  slides.forEach(function(s,k){
+    var b=document.createElement('button'); b.type='button'; b.className='ir'; b.setAttribute('data-k',k);
+    var n=document.createElement('span'); n.textContent=(k+1);
+    var t=document.createElement('span'); t.textContent=s.getAttribute('data-t')||'';
+    b.appendChild(n); b.appendChild(t); lista.appendChild(b);
+  });
+  function fechaMapa(){mapa.hidden=true;}
+  function alternaMapa(){mapa.hidden=!mapa.hidden;}
+  function telaCheia(){
+    try{
+      var el=document.documentElement;
+      if(document.fullscreenElement){document.exitFullscreen();}
+      else if(el.requestFullscreen){var r=el.requestFullscreen(); if(r&&r.catch){r.catch(function(){});}}
+    }catch(e){}
+  }
+
+  document.addEventListener('click',function(e){
+    var b=e.target.closest?e.target.closest('button'):null;
+    if(!b){return;}
+    if(b.id==='prox'){prox();}
+    else if(b.id==='ant'){ant();}
+    else if(b.id==='b-mapa'){alternaMapa();}
+    else if(b.id==='b-cheia'){telaCheia();}
+    else if(b.classList.contains('ir')){mostra(+b.getAttribute('data-k')); fechaMapa();}
+    if(e.detail>0&&b.blur){b.blur();}
+  });
+
+  document.addEventListener('keydown',function(e){
+    if(e.metaKey||e.ctrlKey||e.altKey){return;}
+    var k=e.key;
+    var emControle=e.target&&e.target.closest&&e.target.closest('button,a,input,select,textarea');
+    if(k==='Escape'){fechaMapa(); return;}
+    if(k==='m'||k==='M'){alternaMapa(); return;}
+    if(!mapa.hidden){return;}
+    if(k==='ArrowRight'||k==='PageDown'||k==='ArrowDown'){e.preventDefault(); prox();}
+    else if(k==='ArrowLeft'||k==='PageUp'||k==='ArrowUp'){e.preventDefault(); ant();}
+    else if((k===' '||k==='Enter')&&!emControle){e.preventDefault(); prox();}
+    else if(k==='Home'){mostra(0);}
+    else if(k==='End'){mostra(total-1);}
+    else if(k==='f'||k==='F'){telaCheia();}
+  });
+
+  function doHash(){
+    var m=/^#s(\d+)$/.exec(location.hash||'');
+    return m?(+m[1]-1):null;
+  }
+  window.addEventListener('hashchange',function(){
+    var h=doHash(); if(h!==null&&h!==i){mostra(h);}
+  });
+
+  var inicio=doHash();
+  if(inicio===null){
+    try{var g=localStorage.getItem('aula14-slide'); if(g!==null&&!isNaN(+g)){inicio=+g;}}catch(e){}
+  }
+  mostra(inicio===null?0:inicio);
+})();
+</script>
